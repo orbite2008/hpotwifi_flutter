@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "appTitle": "HpotWiFi",
+  "welcome": "Welcome to Hotspot Wifi",
+  "language": "Language",
+  "darkMode": "Dark mode",
+
+  "signupCreateAccountTitle": "Create account",
+  "signupEnterEmailSubtitle": "Enter your email for validation",
+  "continueBtn": "Continue",
+  "signupHaveAccount": "Already have an account?",
+  "loginLink": "Log in",
+  "signupSendingCode": "Sending verification code...",
+
+  "otpTitle": "Code verification",
+  "otpSubtitle": "We just sent a verification code to",
+  "otpPlaceholder": "Enter the 5-digit code",
+  "otpButton": "Verify",
+  "otpInvalid": "Invalid code. Please try again.",
+  "resendCodeBtn": "Resend code"
+}
