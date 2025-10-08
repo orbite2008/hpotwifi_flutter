@@ -119,6 +119,12 @@ abstract class AppLocalizations {
   /// **'Dark mode'**
   String get darkMode;
 
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
   /// No description provided for @signupCreateAccountTitle.
   ///
   /// In en, this message translates to:
@@ -149,11 +155,17 @@ abstract class AppLocalizations {
   /// **'Log in'**
   String get loginLink;
 
-  /// No description provided for @signupSendingCode.
+  /// No description provided for @signupInvalidEmail.
   ///
   /// In en, this message translates to:
-  /// **'Sending verification code...'**
-  String get signupSendingCode;
+  /// **'Invalid email address. Please try again.'**
+  String get signupInvalidEmail;
+
+  /// No description provided for @countryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a country.'**
+  String get countryRequired;
 
   /// No description provided for @otpTitle.
   ///
@@ -190,6 +202,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resend code'**
   String get resendCodeBtn;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get nameLabel;
+
+  /// No description provided for @firstnameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get firstnameLabel;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneLabel;
+
+  /// No description provided for @cityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get cityLabel;
+
+  /// No description provided for @countryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get countryLabel;
+
+  /// No description provided for @passwordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// No description provided for @termsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you agree to the'**
+  String get termsDescription;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @createAccountBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get createAccountBtn;
+
+  /// No description provided for @accountCreatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully!'**
+  String get accountCreatedMessage;
+
+  /// No description provided for @passwordConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get passwordConfirmLabel;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get passwordMismatch;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required.'**
+  String get passwordRequired;
+
+  /// No description provided for @termsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept the terms and conditions before continuing.'**
+  String get termsRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart'; // on utilise l’extension .appColors
+import 'package:flutter/services.dart';
 import '../theme/app_styles.dart';
 
-/// Champ de saisie réutilisable au style arrondi et adaptatif (light/dark).
+/// Champ de saisie réutilisable et homogène dans tout le projet.
 class AppTextField extends StatefulWidget {
   final String hintText;
   final TextEditingController? controller;
@@ -11,8 +11,9 @@ class AppTextField extends StatefulWidget {
   final bool enabled;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final String? Function(String?)? validator;
+  final String? errorText;
   final void Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppTextField({
     super.key,
@@ -23,13 +24,16 @@ class AppTextField extends StatefulWidget {
     this.enabled = true,
     this.prefixIcon,
     this.suffixIcon,
-    this.validator,
+    this.errorText,
     this.onChanged,
+    this.inputFormatters,
   });
 
+  /// Champ préconfiguré pour e-mail
   factory AppTextField.email({
     String hint = 'Email',
     TextEditingController? controller,
+    String? errorText,
     void Function(String)? onChanged,
   }) =>
       AppTextField(
@@ -37,12 +41,15 @@ class AppTextField extends StatefulWidget {
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         prefixIcon: const Icon(Icons.email_outlined),
+        errorText: errorText,
         onChanged: onChanged,
       );
 
+  /// Champ préconfiguré pour mot de passe
   factory AppTextField.password({
     String hint = 'Mot de passe',
     TextEditingController? controller,
+    String? errorText,
     void Function(String)? onChanged,
   }) =>
       AppTextField(
@@ -50,6 +57,7 @@ class AppTextField extends StatefulWidget {
         controller: controller,
         obscureText: true,
         prefixIcon: const Icon(Icons.lock_outline),
+        errorText: errorText,
         onChanged: onChanged,
       );
 
@@ -68,14 +76,14 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).appColors;
+    final colors = AppColors.of(context);
 
-    return TextFormField(
+    return TextField(
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: _obscured,
       enabled: widget.enabled,
-      validator: widget.validator,
+      inputFormatters: widget.inputFormatters,
       onChanged: widget.onChanged,
       style: AppTextStyles.body.copyWith(
         color: widget.enabled ? colors.textPrimary : colors.textSecondary,
@@ -83,6 +91,12 @@ class _AppTextFieldState extends State<AppTextField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: AppTextStyles.hint.copyWith(color: colors.hint),
+        errorText: widget.errorText,
+        errorStyle: TextStyle(
+          color: colors.error,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+        ),
         prefixIcon: widget.prefixIcon != null
             ? IconTheme(
           data: IconThemeData(color: colors.hint),
@@ -97,15 +111,15 @@ class _AppTextFieldState extends State<AppTextField> {
                 : Icons.visibility_outlined,
             color: colors.hint,
           ),
-          onPressed: () => setState(() {
-            _obscured = !_obscured;
-          }),
+          onPressed: () => setState(() => _obscured = !_obscured),
         )
             : widget.suffixIcon,
         filled: true,
         fillColor: widget.enabled ? colors.inputFill : colors.disabled,
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+
+        // Bordures adaptatives
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.medium),
           borderSide: BorderSide(color: colors.border, width: 1),
@@ -114,9 +128,13 @@ class _AppTextFieldState extends State<AppTextField> {
           borderRadius: BorderRadius.circular(AppRadius.medium),
           borderSide: BorderSide(color: colors.primary, width: 1.3),
         ),
-        disabledBorder: OutlineInputBorder(
+        errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.medium),
-          borderSide: BorderSide(color: colors.border.withOpacity(0.4)),
+          borderSide: BorderSide(color: colors.error, width: 1.2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.medium),
+          borderSide: BorderSide(color: colors.error, width: 1.3),
         ),
       ),
     );

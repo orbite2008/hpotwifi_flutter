@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
+import '../../../../core/widgets/app_loader.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/otp_dialog.dart';
 import 'package:go_router/go_router.dart';
@@ -18,12 +19,16 @@ class RegisterEmailPage extends ConsumerStatefulWidget {
 class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
   final _email = TextEditingController();
   bool _filled = false;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     _email.addListener(() {
-      setState(() => _filled = _email.text.trim().isNotEmpty);
+      setState(() {
+        _filled = _email.text.trim().isNotEmpty;
+        _errorMessage = null;
+      });
     });
   }
 
@@ -31,6 +36,34 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
   void dispose() {
     _email.dispose();
     super.dispose();
+  }
+
+  bool _isValidEmail(String input) {
+    const pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$";
+    return RegExp(pattern).hasMatch(input);
+  }
+
+  Future<void> _onContinue() async {
+    final loc = AppLocalizations.of(context)!;
+    final email = _email.text.trim();
+    FocusScope.of(context).unfocus();
+
+    if (!_isValidEmail(email)) {
+      setState(() {
+        _errorMessage = loc.signupInvalidEmail;
+      });
+      return;
+    }
+
+    // Loader localisé
+    await showAppLoader(context, message: loc.loading);
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (!mounted) return;
+    Navigator.of(context).pop(); // ferme le loader
+
+    await showOtpDialog(context, email);
   }
 
   @override
@@ -46,6 +79,7 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Titre principal
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -55,31 +89,34 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
               ),
             ),
             const SizedBox(height: 8),
+
+            // Sous-titre
             Text(
               loc.signupEnterEmailSubtitle,
               style: TextStyle(fontSize: 15, color: colors.textSecondary),
             ),
             const SizedBox(height: 32),
-            AppTextField.email(controller: _email),
+
+            // Champ e-mail avec erreur localisée
+            AppTextField.email(
+              controller: _email,
+              errorText: _errorMessage,
+            ),
+
             const SizedBox(height: 24),
+
+            // Bouton continuer
             AppButton(
               label: loc.continueBtn,
-              onPressed: _filled
-                  ? () async {
-                FocusScope.of(context).unfocus();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(loc.signupSendingCode)),
-                );
-                await Future.delayed(const Duration(seconds: 1));
-                if (!mounted) return;
-                await showOtpDialog(context, _email.text.trim());
-              }
-                  : null,
+              onPressed: _filled ? _onContinue : null,
               enabled: _filled,
               backgroundColor:
               _filled ? colors.buttonActive : colors.buttonInactive,
             ),
+
             const SizedBox(height: 20),
+
+            // Lien vers la connexion
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
@@ -92,8 +129,8 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
                   onTap: () => context.goNamed('login'),
                   child: Text(
                     loc.loginLink,
-                    style: const TextStyle(
-                      color: Color(0xFF0C60AF),
+                    style: TextStyle(
+                      color: colors.buttonActive,
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
                     ),

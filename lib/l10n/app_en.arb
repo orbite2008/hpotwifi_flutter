@@ -5,17 +5,37 @@
   "language": "Language",
   "darkMode": "Dark mode",
 
+  "loading": "Loading...",
+
   "signupCreateAccountTitle": "Create account",
   "signupEnterEmailSubtitle": "Enter your email for validation",
   "continueBtn": "Continue",
   "signupHaveAccount": "Already have an account?",
   "loginLink": "Log in",
-  "signupSendingCode": "Sending verification code...",
+  "signupInvalidEmail": "Invalid email address. Please try again.",
+  "countryRequired": "Please select a country.",
 
   "otpTitle": "Code verification",
   "otpSubtitle": "We just sent a verification code to",
   "otpPlaceholder": "Enter the 5-digit code",
   "otpButton": "Verify",
   "otpInvalid": "Invalid code. Please try again.",
-  "resendCodeBtn": "Resend code"
+  "resendCodeBtn": "Resend code",
+
+  "nameLabel": "Last name",
+  "firstnameLabel": "First name",
+  "phoneLabel": "Phone number",
+  "cityLabel": "City",
+  "countryLabel": "Country",
+
+  "passwordLabel": "Password",
+  "termsDescription": "By continuing, you agree to the",
+  "termsAndConditions": "Terms and Conditions",
+  "createAccountBtn": "Create account",
+  "accountCreatedMessage": "Account created successfully!",
+  "passwordConfirmLabel": "Confirm password",
+  "passwordMismatch": "Passwords do not match.",
+  "passwordRequired": "Password is required.",
+  "termsRequired": "You must accept the terms and conditions before continuing."
+
 }

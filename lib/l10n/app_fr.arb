@@ -5,17 +5,37 @@
   "language": "Langue",
   "darkMode": "Mode sombre",
 
-  "signupCreateAccountTitle": "Creation de compte",
+  "loading": "Chargement en cours...",
+
+  "signupCreateAccountTitle": "Création de compte",
   "signupEnterEmailSubtitle": "Entrez votre email pour une validation",
   "continueBtn": "Continuer",
   "signupHaveAccount": "Vous avez déjà un compte ?",
   "loginLink": "Connectez-vous",
-  "signupSendingCode": "Envoi du code de vérification...",
+  "signupInvalidEmail": "Adresse e-mail invalide. Veuillez réessayer.",
+  "countryRequired": "Veuillez sélectionner un pays.",
 
   "otpTitle": "Vérification du code",
   "otpSubtitle": "Nous venons d'envoyer un code de vérification à l'adresse",
   "otpPlaceholder": "Entrez le code à 5 chiffres",
   "otpButton": "Vérifier",
   "otpInvalid": "Code invalide. Veuillez réessayer.",
-  "resendCodeBtn": "Renvoyer le code"
+  "resendCodeBtn": "Renvoyer le code",
+
+  "nameLabel": "Nom",
+  "firstnameLabel": "Prénom",
+  "phoneLabel": "Numéro",
+  "cityLabel": "Ville",
+  "countryLabel": "Pays",
+
+  "passwordLabel": "Mot de passe",
+  "termsDescription": "En continuant, vous acceptez les",
+  "termsAndConditions": "Termes et conditions",
+  "createAccountBtn": "Créer un compte",
+  "accountCreatedMessage": "Compte créé avec succès !",
+  "passwordConfirmLabel": "Confirmer le mot de passe",
+  "passwordMismatch": "Les mots de passe ne correspondent pas.",
+  "passwordRequired": "Le mot de passe est requis.",
+  "termsRequired": "Vous devez accepter les termes et conditions avant de continuer."
+
 }

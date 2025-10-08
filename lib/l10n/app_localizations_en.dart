@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get darkMode => 'Dark mode';
 
   @override
+  String get loading => 'Loading...';
+
+  @override
   String get signupCreateAccountTitle => 'Create account';
 
   @override
@@ -36,7 +39,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginLink => 'Log in';
 
   @override
-  String get signupSendingCode => 'Sending verification code...';
+  String get signupInvalidEmail => 'Invalid email address. Please try again.';
+
+  @override
+  String get countryRequired => 'Please select a country.';
 
   @override
   String get otpTitle => 'Code verification';
@@ -55,4 +61,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resendCodeBtn => 'Resend code';
+
+  @override
+  String get nameLabel => 'Last name';
+
+  @override
+  String get firstnameLabel => 'First name';
+
+  @override
+  String get phoneLabel => 'Phone number';
+
+  @override
+  String get cityLabel => 'City';
+
+  @override
+  String get countryLabel => 'Country';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get termsDescription => 'By continuing, you agree to the';
+
+  @override
+  String get termsAndConditions => 'Terms and Conditions';
+
+  @override
+  String get createAccountBtn => 'Create account';
+
+  @override
+  String get accountCreatedMessage => 'Account created successfully!';
+
+  @override
+  String get passwordConfirmLabel => 'Confirm password';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match.';
+
+  @override
+  String get passwordRequired => 'Password is required.';
+
+  @override
+  String get termsRequired => 'You must accept the terms and conditions before continuing.';
 }

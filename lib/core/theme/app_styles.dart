@@ -13,6 +13,7 @@ class AppColors {
   final Color inputFill;
   final Color buttonInactive;
   final Color buttonActive;
+  final Color error;
 
   const AppColors({
     required this.primary,
@@ -26,6 +27,7 @@ class AppColors {
     required this.inputFill,
     required this.buttonInactive,
     required this.buttonActive,
+    required this.error,
   });
 
   /// Palette claire
@@ -41,6 +43,7 @@ class AppColors {
     inputFill: Colors.white,
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
+    error: Color(0xFFE53935),
   );
 
   /// Palette sombre
@@ -56,27 +59,31 @@ class AppColors {
     inputFill: Color(0xFF1C1C1C),
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
+    error: Color(0xFFEF5350),
   );
 
-  /// Récupère la palette en fonction du thème actif
+  /// Récupère la palette active selon le thème
   static AppColors of(BuildContext context) {
     final brightness = Theme.of(context).brightness;
     return brightness == Brightness.dark ? dark : light;
   }
 }
 
+/// Rayon standard
 class AppRadius {
   static const double small = 8.0;
   static const double medium = 14.0;
   static const double large = 20.0;
 }
 
+/// Marges standard
 class AppPadding {
   static const double small = 8.0;
   static const double normal = 16.0;
   static const double large = 24.0;
 }
 
+/// Styles de texte standard
 class AppTextStyles {
   static const TextStyle body = TextStyle(fontSize: 15);
   static const TextStyle hint = TextStyle(fontSize: 15);

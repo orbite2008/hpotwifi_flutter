@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -14,19 +16,16 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
 
   bool filled = false;
   bool canResend = false;
-  int remainingSeconds = 120; // 2 minutes
-  String feedbackText = "";
-  Color? feedbackColor;
-
+  int remainingSeconds = 120;
+  String? errorText;
   Timer? timer;
 
   String maskedEmail() {
     final parts = email.split('@');
     if (parts.length < 2) return email;
     final prefix = parts[0];
-    final masked = prefix.length <= 3
-        ? '${prefix[0]}***'
-        : '${prefix.substring(0, 3)}*****';
+    final masked =
+    prefix.length <= 3 ? '${prefix[0]}***' : '${prefix.substring(0, 3)}*****';
     return '$masked@${parts[1]}';
   }
 
@@ -34,7 +33,6 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
     context: context,
     barrierDismissible: false,
     builder: (dialogContext) {
-      // Démarrage du timer sécurisé
       timer = Timer.periodic(const Duration(seconds: 1), (t) {
         if (remainingSeconds > 0) {
           remainingSeconds--;
@@ -42,9 +40,7 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
           canResend = true;
           t.cancel();
         }
-        if (dialogContext.mounted) {
-          (dialogContext as Element).markNeedsBuild();
-        }
+        if (dialogContext.mounted) (dialogContext as Element).markNeedsBuild();
       });
 
       return StatefulBuilder(
@@ -52,11 +48,13 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
           void updateFilled(String value) {
             if (value.length > 5) {
               controller.text = value.substring(0, 5);
-              controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: controller.text.length),
-              );
+              controller.selection =
+                  TextSelection.fromPosition(TextPosition(offset: 5));
             }
-            setState(() => filled = controller.text.trim().length == 5);
+            setState(() {
+              filled = controller.text.trim().length == 5;
+              errorText = null;
+            });
           }
 
           void dismissKeyboard() => FocusScope.of(context).unfocus();
@@ -66,19 +64,7 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
             setState(() {
               canResend = false;
               remainingSeconds = 120;
-              feedbackText = "";
-            });
-            timer?.cancel();
-            timer = Timer.periodic(const Duration(seconds: 1), (t) {
-              if (remainingSeconds > 0) {
-                remainingSeconds--;
-              } else {
-                canResend = true;
-                t.cancel();
-              }
-              if (context.mounted) {
-                (context as Element).markNeedsBuild();
-              }
+              errorText = null;
             });
           }
 
@@ -86,36 +72,20 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
             dismissKeyboard();
             if (!filled) return;
 
-            // Loader affiché au-dessus du blur
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (_) => const Center(child: CircularProgressIndicator()),
-            );
-
+            await showAppLoader(context, message: loc.loading);
             await Future.delayed(const Duration(seconds: 2));
 
             if (!context.mounted) return;
-            Navigator.of(context).pop(); // ferme le loader
+            Navigator.of(context).pop();
 
-            // Validation du code
-            final code = controller.text.trim();
-            if (code == "00000") {
-              setState(() {
-                feedbackText = "Code vérifié avec succès.";
-                feedbackColor = Colors.green;
-              });
-
-              await Future.delayed(const Duration(milliseconds: 800));
+            if (controller.text.trim() == "00000") {
+              await Future.delayed(const Duration(milliseconds: 600));
               if (dialogContext.mounted) {
-                Navigator.of(dialogContext).pop(); // ferme le dialogue
-                context.goNamed('registerDetails'); // vers l’étape suivante
+                Navigator.of(dialogContext).pop();
+                context.goNamed('registerDetails');
               }
             } else {
-              setState(() {
-                feedbackText = loc.otpInvalid;
-                feedbackColor = Colors.red;
-              });
+              setState(() => errorText = loc.otpInvalid);
             }
           }
 
@@ -123,20 +93,32 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Dialog(
               backgroundColor: colors.surface.withValues(alpha: 0.97),
+              insetPadding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.large),
               ),
-              insetPadding:
-              const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
               child: Padding(
                 padding: const EdgeInsets.all(AppPadding.large),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start, // 👉 align start
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.lock_outline,
-                        size: 50, color: Color(0xFF0C60AF)),
-                    const SizedBox(height: 16),
+                    // Ligne titre + bouton fermer
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.lock_outline,
+                            size: 48, color: colors.buttonActive),
+                        GestureDetector(
+                          onTap: () => Navigator.of(dialogContext).pop(),
+                          child: Icon(Icons.close_rounded,
+                              color: colors.textSecondary, size: 26),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
                     Text(
                       loc.otpTitle,
                       style: TextStyle(
@@ -145,41 +127,25 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
                         color: colors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
+
                     Text(
                       '${loc.otpSubtitle} ${maskedEmail()}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: colors.textSecondary,
-                      ),
+                      style:
+                      TextStyle(fontSize: 15, color: colors.textSecondary),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
 
-                    // Champ OTP
                     AppTextField(
                       hintText: loc.otpPlaceholder,
                       controller: controller,
                       keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      errorText: errorText,
                       onChanged: updateFilled,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 14),
 
-                    // Message de feedback (succès / erreur)
-                    if (feedbackText.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          feedbackText,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: feedbackColor ?? colors.textSecondary,
-                          ),
-                        ),
-                      ),
-
-                    const SizedBox(height: 12),
-
-                    // Bouton vérifier
                     AppButton(
                       label: loc.otpButton,
                       enabled: filled,
@@ -188,10 +154,8 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
                           ? colors.buttonActive
                           : colors.buttonInactive,
                     ),
-
                     const SizedBox(height: 12),
 
-                    // Bouton renvoyer le code + timer
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -224,7 +188,5 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
         },
       );
     },
-  ).whenComplete(() {
-    timer?.cancel();
-  });
+  ).whenComplete(() => timer?.cancel());
 }
