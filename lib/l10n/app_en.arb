@@ -7,6 +7,7 @@
 
   "loading": "Loading...",
 
+
   "signupCreateAccountTitle": "Create account",
   "signupEnterEmailSubtitle": "Enter your email for validation",
   "continueBtn": "Continue",
@@ -29,13 +30,32 @@
   "countryLabel": "Country",
 
   "passwordLabel": "Password",
+  "passwordConfirmLabel": "Confirm password",
+  "passwordRequired": "Password is required.",
+  "passwordMismatch": "Passwords do not match.",
   "termsDescription": "By continuing, you agree to the",
-  "termsAndConditions": "Terms and Conditions",
+  "termsAndConditions": "terms and conditions",
+  "termsRequired": "You must accept the terms.",
   "createAccountBtn": "Create account",
   "accountCreatedMessage": "Account created successfully!",
-  "passwordConfirmLabel": "Confirm password",
-  "passwordMismatch": "Passwords do not match.",
-  "passwordRequired": "Password is required.",
-  "termsRequired": "You must accept the terms and conditions before continuing."
 
+
+  "loginTitle": "Log in",
+  "loginSubtitle": "Enter your credentials to log in",
+  "emailLabel": "Email",
+  "loginBtn": "Login",
+  "forgotPassword": "Forgot password?",
+  "noAccount": "Don't have an account?",
+  "signupLink": "Sign up",
+  "invalidCredentials": "Invalid email or password.",
+  "emailRequired": "Email is required.",
+  "loginSuccess": "Login successful!",
+
+
+  "forgotPasswordTitle": "Reset your password",
+  "forgotPasswordSubtitle": "Please enter the email address associated with your account and we will send you a link to reset your password.",
+  "backToLogin": "Back to login page",
+  "continueButton": "Continue",
+  "resetLinkSent": "Reset link sent!",
+  "checkYourEmail": "Check your email inbox."
 }

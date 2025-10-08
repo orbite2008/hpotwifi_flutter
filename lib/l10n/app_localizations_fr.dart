@@ -81,10 +81,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get passwordLabel => 'Mot de passe';
 
   @override
+  String get passwordConfirmLabel => 'Confirmer le mot de passe';
+
+  @override
+  String get passwordRequired => 'Le mot de passe est requis.';
+
+  @override
+  String get passwordMismatch => 'Les mots de passe ne correspondent pas.';
+
+  @override
   String get termsDescription => 'En continuant, vous acceptez les';
 
   @override
-  String get termsAndConditions => 'Termes et conditions';
+  String get termsAndConditions => 'conditions générales d\'utilisation';
+
+  @override
+  String get termsRequired => 'Vous devez accepter les conditions.';
 
   @override
   String get createAccountBtn => 'Créer un compte';
@@ -93,14 +105,50 @@ class AppLocalizationsFr extends AppLocalizations {
   String get accountCreatedMessage => 'Compte créé avec succès !';
 
   @override
-  String get passwordConfirmLabel => 'Confirmer le mot de passe';
+  String get loginTitle => 'Connectez-vous';
 
   @override
-  String get passwordMismatch => 'Les mots de passe ne correspondent pas.';
+  String get loginSubtitle => 'Entrez vos identifiants pour vous connecter';
 
   @override
-  String get passwordRequired => 'Le mot de passe est requis.';
+  String get emailLabel => 'Email';
 
   @override
-  String get termsRequired => 'Vous devez accepter les termes et conditions avant de continuer.';
+  String get loginBtn => 'Connexion';
+
+  @override
+  String get forgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get noAccount => 'Vous n\'avez pas de compte ?';
+
+  @override
+  String get signupLink => 'Créer un compte';
+
+  @override
+  String get invalidCredentials => 'Email ou mot de passe incorrect.';
+
+  @override
+  String get emailRequired => 'L\'email est requis.';
+
+  @override
+  String get loginSuccess => 'Connexion réussie !';
+
+  @override
+  String get forgotPasswordTitle => 'Réinitialiser votre mot de passe';
+
+  @override
+  String get forgotPasswordSubtitle => 'Veuillez saisir l\'adresse e-mail associée à votre compte et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
+
+  @override
+  String get backToLogin => 'Retour à la page de connexion';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get resetLinkSent => 'Lien de réinitialisation envoyé !';
+
+  @override
+  String get checkYourEmail => 'Vérifiez votre boîte mail.';
 }

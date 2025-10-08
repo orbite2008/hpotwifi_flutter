@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../features/presentation/pages/home_page.dart';
-import '../../../features/presentation/pages/settings_page.dart';
-import '../../../features/auth/presentation/pages/register_email_page.dart';
-import '../../../features/auth/presentation/pages/register_details_page.dart';
-import '../../../features/auth/presentation/pages/register_password_page.dart';
+
+import '../../features/presentation/pages/home_page.dart';
+import '../../features/presentation/pages/settings_page.dart';
+import '../../features/auth/presentation/pages/register_email_page.dart';
+import '../../features/auth/presentation/pages/register_details_page.dart';
+import '../../features/auth/presentation/pages/register_password_page.dart';
+import '../../features/auth/presentation/pages/login_page.dart'; // NOUVEAU
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/auth/register-email',
+    initialLocation: '/login', // Changer pour commencer sur login
     routes: [
       GoRoute(
         path: '/',
@@ -21,6 +22,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'settings',
         builder: (context, state) => const SettingsPage(),
       ),
+      
+      // Route de connexion
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      
+      // Routes d'inscription
       GoRoute(
         path: '/auth/register-email',
         name: 'registerEmail',
@@ -36,24 +46,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'registerPassword',
         builder: (context, state) => const RegisterPasswordPage(),
       ),
-      GoRoute(
-        path: '/login',
-        name: 'login',
-        builder: (context, state) => const _LoginPlaceholder(),
-      ),
     ],
   );
 });
-
-class _LoginPlaceholder extends StatelessWidget {
-  const _LoginPlaceholder({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Page de connexion (à implémenter)', style: TextStyle(fontSize: 18)),
-      ),
-    );
-  }
-}

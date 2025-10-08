@@ -7,6 +7,7 @@
 
   "loading": "Chargement en cours...",
 
+
   "signupCreateAccountTitle": "Création de compte",
   "signupEnterEmailSubtitle": "Entrez votre email pour une validation",
   "continueBtn": "Continuer",
@@ -29,13 +30,31 @@
   "countryLabel": "Pays",
 
   "passwordLabel": "Mot de passe",
+  "passwordConfirmLabel": "Confirmer le mot de passe",
+  "passwordRequired": "Le mot de passe est requis.",
+  "passwordMismatch": "Les mots de passe ne correspondent pas.",
   "termsDescription": "En continuant, vous acceptez les",
-  "termsAndConditions": "Termes et conditions",
+  "termsAndConditions": "conditions générales d'utilisation",
+  "termsRequired": "Vous devez accepter les conditions.",
   "createAccountBtn": "Créer un compte",
   "accountCreatedMessage": "Compte créé avec succès !",
-  "passwordConfirmLabel": "Confirmer le mot de passe",
-  "passwordMismatch": "Les mots de passe ne correspondent pas.",
-  "passwordRequired": "Le mot de passe est requis.",
-  "termsRequired": "Vous devez accepter les termes et conditions avant de continuer."
 
+
+  "loginTitle": "Connectez-vous",
+  "loginSubtitle": "Entrez vos identifiants pour vous connecter",
+  "emailLabel": "Email",
+  "loginBtn": "Connexion",
+  "forgotPassword": "Mot de passe oublié ?",
+  "noAccount": "Vous n'avez pas de compte ?",
+  "signupLink": "Créer un compte",
+  "invalidCredentials": "Email ou mot de passe incorrect.",
+  "emailRequired": "L'email est requis.",
+  "loginSuccess": "Connexion réussie !",
+
+  "forgotPasswordTitle": "Réinitialiser votre mot de passe",
+  "forgotPasswordSubtitle": "Veuillez saisir l'adresse e-mail associée à votre compte et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+  "backToLogin": "Retour à la page de connexion",
+  "continueButton": "Continue",
+  "resetLinkSent": "Lien de réinitialisation envoyé !",
+  "checkYourEmail": "Vérifiez votre boîte mail."
 }

@@ -81,10 +81,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordLabel => 'Password';
 
   @override
+  String get passwordConfirmLabel => 'Confirm password';
+
+  @override
+  String get passwordRequired => 'Password is required.';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match.';
+
+  @override
   String get termsDescription => 'By continuing, you agree to the';
 
   @override
-  String get termsAndConditions => 'Terms and Conditions';
+  String get termsAndConditions => 'terms and conditions';
+
+  @override
+  String get termsRequired => 'You must accept the terms.';
 
   @override
   String get createAccountBtn => 'Create account';
@@ -93,14 +105,50 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountCreatedMessage => 'Account created successfully!';
 
   @override
-  String get passwordConfirmLabel => 'Confirm password';
+  String get loginTitle => 'Log in';
 
   @override
-  String get passwordMismatch => 'Passwords do not match.';
+  String get loginSubtitle => 'Enter your credentials to log in';
 
   @override
-  String get passwordRequired => 'Password is required.';
+  String get emailLabel => 'Email';
 
   @override
-  String get termsRequired => 'You must accept the terms and conditions before continuing.';
+  String get loginBtn => 'Login';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get noAccount => 'Don\'t have an account?';
+
+  @override
+  String get signupLink => 'Sign up';
+
+  @override
+  String get invalidCredentials => 'Invalid email or password.';
+
+  @override
+  String get emailRequired => 'Email is required.';
+
+  @override
+  String get loginSuccess => 'Login successful!';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle => 'Please enter the email address associated with your account and we will send you a link to reset your password.';
+
+  @override
+  String get backToLogin => 'Back to login page';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get resetLinkSent => 'Reset link sent!';
+
+  @override
+  String get checkYourEmail => 'Check your email inbox.';
 }
