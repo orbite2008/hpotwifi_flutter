@@ -135,20 +135,44 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loginSuccess => 'Connexion réussie !';
 
   @override
-  String get forgotPasswordTitle => 'Réinitialiser votre mot de passe';
+  String get loginFailed => 'Connexion échouée. Vérifiez vos informations.';
 
   @override
-  String get forgotPasswordSubtitle => 'Veuillez saisir l\'adresse e-mail associée à votre compte et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
+  String get forgotPasswordTitle => 'Mot de passe oublié ?';
 
   @override
-  String get backToLogin => 'Retour à la page de connexion';
+  String get forgotPasswordSubtitle => 'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.';
 
   @override
-  String get continueButton => 'Continue';
+  String get continueButton => 'Envoyer le lien';
 
   @override
   String get resetLinkSent => 'Lien de réinitialisation envoyé !';
 
   @override
-  String get checkYourEmail => 'Vérifiez votre boîte mail.';
+  String get checkYourEmail => 'Veuillez vérifier votre boîte mail pour continuer.';
+
+  @override
+  String get resetPasswordTitle => 'Créer un nouveau mot de passe';
+
+  @override
+  String get resetPasswordSubtitle => 'Veuillez entrer le nouveau mot de passe';
+
+  @override
+  String get resetPasswordButton => 'Modifier le mot de passe';
+
+  @override
+  String get passwordResetSuccessTitle => 'Votre mot de passe a été modifié avec succès.';
+
+  @override
+  String get passwordTooShort => 'Le mot de passe doit contenir au moins 6 caractères.';
+
+  @override
+  String get passwordConfirmRequired => 'Veuillez confirmer votre mot de passe.';
+
+  @override
+  String get phoneRequired => 'Le numéro de téléphone est requis.';
+
+  @override
+  String get phoneInvalid => 'Numéro de téléphone invalide.';
 }

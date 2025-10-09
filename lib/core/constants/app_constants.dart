@@ -14,3 +14,7 @@ class AppConstants {
   static const double defaultPadding = 16.0;
   static const double defaultRadius = 12.0;
 }
+
+class AppAssets {
+  static const String resetPwd = 'assets/images/passwordreset.png';
+}

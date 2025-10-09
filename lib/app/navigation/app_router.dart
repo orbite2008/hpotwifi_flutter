@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/pages/reset_password_page.dart';
+import '../../features/auth/presentation/pages/reset_success_page.dart';
 import '../../features/presentation/pages/home_page.dart';
 import '../../features/presentation/pages/settings_page.dart';
 import '../../features/auth/presentation/pages/register_email_page.dart';
@@ -46,6 +48,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'registerPassword',
         builder: (context, state) => const RegisterPasswordPage(),
       ),
+
+      GoRoute(
+        path: '/auth/reset-password',
+        name: 'resetPassword',
+        builder: (context, state) => const ResetPasswordPage(),
+      ),
+      GoRoute(
+        path: '/auth/reset-success',
+        name: 'resetSuccess',
+        builder: (context, state) => const ResetSuccessPage(),
+      ),
+
+
+
     ],
   );
 });

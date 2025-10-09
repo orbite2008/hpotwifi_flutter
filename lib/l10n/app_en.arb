@@ -50,12 +50,25 @@
   "invalidCredentials": "Invalid email or password.",
   "emailRequired": "Email is required.",
   "loginSuccess": "Login successful!",
+  "loginFailed": "Login failed. Please check your information.",
 
 
-  "forgotPasswordTitle": "Reset your password",
-  "forgotPasswordSubtitle": "Please enter the email address associated with your account and we will send you a link to reset your password.",
-  "backToLogin": "Back to login page",
-  "continueButton": "Continue",
-  "resetLinkSent": "Reset link sent!",
-  "checkYourEmail": "Check your email inbox."
+  "forgotPasswordTitle": "Forgot your password?",
+  "forgotPasswordSubtitle": "Enter your email address to receive a reset link.",
+  "continueButton": "Send link",
+  "resetLinkSent": "Password reset link sent!",
+  "checkYourEmail": "Please check your email inbox to continue.",
+
+  "resetPasswordTitle": "Create a new password",
+  "resetPasswordSubtitle": "Please enter your new password",
+  "resetPasswordButton": "Change password",
+
+  "passwordResetSuccessTitle": "Your password has been successfully updated.",
+  "passwordTooShort": "Password must be at least 6 characters long.",
+  "passwordConfirmRequired": "Please confirm your password.",
+  "phoneRequired": "Phone number is required.",
+  "phoneInvalid": "Invalid phone number."
+
+
+
 }

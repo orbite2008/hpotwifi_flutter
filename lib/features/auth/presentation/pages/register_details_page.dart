@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/theme/app_styles.dart';
+import '../../../../core/utils/form_validators.dart';
 import '../../../../l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 class RegisterDetailsPage extends ConsumerStatefulWidget {
   const RegisterDetailsPage({super.key});
@@ -18,13 +19,14 @@ class RegisterDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
-  final _nom = TextEditingController();
-  final _prenom = TextEditingController();
-  final _numero = TextEditingController();
-  final _ville = TextEditingController();
+  final _nomController = TextEditingController();
+  final _prenomController = TextEditingController();
+  final _numeroController = TextEditingController();
+  final _villeController = TextEditingController();
   String? _pays;
   bool _filled = false;
-  String? _error;
+  String? _errorCountry;
+  String? _phoneError;
 
   final List<String> _paysList = [
     'Bénin',
@@ -35,33 +37,34 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
     'Nigéria',
   ];
 
-  void _checkFilled() {
-    setState(() {
-      _filled = _nom.text.isNotEmpty &&
-          _prenom.text.isNotEmpty &&
-          _numero.text.isNotEmpty &&
-          _ville.text.isNotEmpty &&
-          _pays != null;
-      _error = null;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    _nom.addListener(_checkFilled);
-    _prenom.addListener(_checkFilled);
-    _numero.addListener(_checkFilled);
-    _ville.addListener(_checkFilled);
+    _nomController.addListener(_checkFilled);
+    _prenomController.addListener(_checkFilled);
+    _numeroController.addListener(_checkFilled);
+    _villeController.addListener(_checkFilled);
   }
 
   @override
   void dispose() {
-    _nom.dispose();
-    _prenom.dispose();
-    _numero.dispose();
-    _ville.dispose();
+    _nomController.dispose();
+    _prenomController.dispose();
+    _numeroController.dispose();
+    _villeController.dispose();
     super.dispose();
+  }
+
+  void _checkFilled() {
+    setState(() {
+      _filled = _nomController.text.isNotEmpty &&
+          _prenomController.text.isNotEmpty &&
+          _numeroController.text.isNotEmpty &&
+          _villeController.text.isNotEmpty &&
+          _pays != null;
+      _errorCountry = null;
+      _phoneError = null;
+    });
   }
 
   /// Validation et navigation
@@ -69,20 +72,30 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
     FocusScope.of(context).unfocus();
     final loc = AppLocalizations.of(context)!;
 
+    // ✅ Validation du pays
     if (_pays == null || _pays!.isEmpty) {
-      setState(() => _error = loc.countryRequired);
+      setState(() => _errorCountry = loc.countryRequired);
       return;
     }
 
+    // ✅ Validation du numéro
+    final phoneError =
+    FormValidators.validatePhone(context, _numeroController.text);
+    if (phoneError != null) {
+      setState(() => _phoneError = phoneError);
+      return;
+    }
+
+    // ✅ Affiche le loader
     await showAppLoader(context, message: loc.loading);
     await Future.delayed(const Duration(seconds: 1));
 
     if (!mounted) return;
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(); // Ferme le loader
 
+    // ✅ Navigation vers la page de mot de passe
     context.goNamed('registerPassword');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +110,7 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titre principal
+            // 🔹 Titre principal
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -108,37 +121,38 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
             ),
             const SizedBox(height: 24),
 
-            // Champ Nom
+            // 🔹 Champ Nom
             AppTextField(
               hintText: loc.nameLabel,
-              controller: _nom,
+              controller: _nomController,
             ),
             const SizedBox(height: 16),
 
-            // Champ Prénom
+            // 🔹 Champ Prénom
             AppTextField(
               hintText: loc.firstnameLabel,
-              controller: _prenom,
+              controller: _prenomController,
             ),
             const SizedBox(height: 16),
 
-            // Champ Numéro (chiffres uniquement)
+            // 🔹 Champ Numéro de téléphone (avec validation)
             AppTextField(
               hintText: loc.phoneLabel,
-              controller: _numero,
+              controller: _numeroController,
               keyboardType: TextInputType.phone,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              errorText: _phoneError,
             ),
             const SizedBox(height: 16),
 
-            // Champ Ville
+            // 🔹 Champ Ville
             AppTextField(
               hintText: loc.cityLabel,
-              controller: _ville,
+              controller: _villeController,
             ),
             const SizedBox(height: 16),
 
-            // Champ Pays (Dropdown stylisé)
+            // 🔹 Champ Pays (Dropdown)
             DropdownButtonFormField<String>(
               initialValue: _pays,
               dropdownColor: colors.surface,
@@ -163,10 +177,7 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
               items: _paysList
                   .map((p) => DropdownMenuItem(
                 value: p,
-                child: Text(
-                  p,
-                  style: TextStyle(color: colors.textPrimary),
-                ),
+                child: Text(p, style: TextStyle(color: colors.textPrimary)),
               ))
                   .toList(),
               onChanged: (value) {
@@ -175,10 +186,10 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
               },
             ),
 
-            if (_error != null) ...[
+            if (_errorCountry != null) ...[
               const SizedBox(height: 8),
               Text(
-                _error!,
+                _errorCountry!,
                 style: TextStyle(
                   color: colors.error,
                   fontSize: 14,
@@ -189,7 +200,7 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
 
             const SizedBox(height: 32),
 
-            // Bouton continuer
+            // 🔹 Bouton continuer
             AppButton(
               label: loc.continueBtn,
               enabled: _filled,
@@ -200,7 +211,7 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
 
             const SizedBox(height: 24),
 
-            // Lien "Déjà un compte ?"
+            // 🔹 Lien vers la connexion
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

@@ -135,20 +135,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSuccess => 'Login successful!';
 
   @override
-  String get forgotPasswordTitle => 'Reset your password';
+  String get loginFailed => 'Login failed. Please check your information.';
 
   @override
-  String get forgotPasswordSubtitle => 'Please enter the email address associated with your account and we will send you a link to reset your password.';
+  String get forgotPasswordTitle => 'Forgot your password?';
 
   @override
-  String get backToLogin => 'Back to login page';
+  String get forgotPasswordSubtitle => 'Enter your email address to receive a reset link.';
 
   @override
-  String get continueButton => 'Continue';
+  String get continueButton => 'Send link';
 
   @override
-  String get resetLinkSent => 'Reset link sent!';
+  String get resetLinkSent => 'Password reset link sent!';
 
   @override
-  String get checkYourEmail => 'Check your email inbox.';
+  String get checkYourEmail => 'Please check your email inbox to continue.';
+
+  @override
+  String get resetPasswordTitle => 'Create a new password';
+
+  @override
+  String get resetPasswordSubtitle => 'Please enter your new password';
+
+  @override
+  String get resetPasswordButton => 'Change password';
+
+  @override
+  String get passwordResetSuccessTitle => 'Your password has been successfully updated.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters long.';
+
+  @override
+  String get passwordConfirmRequired => 'Please confirm your password.';
+
+  @override
+  String get phoneRequired => 'Phone number is required.';
+
+  @override
+  String get phoneInvalid => 'Invalid phone number.';
 }

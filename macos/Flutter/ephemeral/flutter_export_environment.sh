@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/esther/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/esther/hpotwifi_flutter"
+export "FLUTTER_ROOT=/home/ketch/Android/flutter"
+export "FLUTTER_APPLICATION_PATH=/home/ketch/StudioProjects/hpotwifi_flutter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.1.0"

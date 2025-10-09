@@ -347,41 +347,89 @@ abstract class AppLocalizations {
   /// **'Login successful!'**
   String get loginSuccess;
 
+  /// No description provided for @loginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please check your information.'**
+  String get loginFailed;
+
   /// No description provided for @forgotPasswordTitle.
   ///
   /// In en, this message translates to:
-  /// **'Reset your password'**
+  /// **'Forgot your password?'**
   String get forgotPasswordTitle;
 
   /// No description provided for @forgotPasswordSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Please enter the email address associated with your account and we will send you a link to reset your password.'**
+  /// **'Enter your email address to receive a reset link.'**
   String get forgotPasswordSubtitle;
-
-  /// No description provided for @backToLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'Back to login page'**
-  String get backToLogin;
 
   /// No description provided for @continueButton.
   ///
   /// In en, this message translates to:
-  /// **'Continue'**
+  /// **'Send link'**
   String get continueButton;
 
   /// No description provided for @resetLinkSent.
   ///
   /// In en, this message translates to:
-  /// **'Reset link sent!'**
+  /// **'Password reset link sent!'**
   String get resetLinkSent;
 
   /// No description provided for @checkYourEmail.
   ///
   /// In en, this message translates to:
-  /// **'Check your email inbox.'**
+  /// **'Please check your email inbox to continue.'**
   String get checkYourEmail;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your new password'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get resetPasswordButton;
+
+  /// No description provided for @passwordResetSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been successfully updated.'**
+  String get passwordResetSuccessTitle;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters long.'**
+  String get passwordTooShort;
+
+  /// No description provided for @passwordConfirmRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password.'**
+  String get passwordConfirmRequired;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required.'**
+  String get phoneRequired;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number.'**
+  String get phoneInvalid;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

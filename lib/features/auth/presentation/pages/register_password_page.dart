@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/theme/app_styles.dart';
+import '../../../../core/utils/form_validators.dart';
 import '../../../../l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 class RegisterPasswordPage extends ConsumerStatefulWidget {
   const RegisterPasswordPage({super.key});
@@ -17,8 +18,8 @@ class RegisterPasswordPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
-  final _password = TextEditingController();
-  final _confirmPassword = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmController = TextEditingController();
 
   bool _acceptedTerms = false;
   bool _filled = false;
@@ -30,14 +31,21 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
   @override
   void initState() {
     super.initState();
-    _password.addListener(_checkFilled);
-    _confirmPassword.addListener(_checkFilled);
+    _passwordController.addListener(_checkFilled);
+    _confirmController.addListener(_checkFilled);
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
   }
 
   void _checkFilled() {
     setState(() {
-      _filled = _password.text.isNotEmpty &&
-          _confirmPassword.text.isNotEmpty &&
+      _filled = _passwordController.text.isNotEmpty &&
+          _confirmController.text.isNotEmpty &&
           _acceptedTerms;
       _passwordError = null;
       _confirmError = null;
@@ -45,14 +53,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
     });
   }
 
-  @override
-  void dispose() {
-    _password.dispose();
-    _confirmPassword.dispose();
-    super.dispose();
-  }
-
-  /// Validation du mot de passe et navigation
+  /// Validation centralisée et navigation
   Future<void> _onContinue() async {
     final loc = AppLocalizations.of(context)!;
     FocusScope.of(context).unfocus();
@@ -63,12 +64,14 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
       _termsError = null;
     });
 
-    if (_password.text.isEmpty) {
-      setState(() => _passwordError = loc.passwordRequired);
+    final passwordError =
+    FormValidators.validatePassword(context, _passwordController.text);
+    if (passwordError != null) {
+      setState(() => _passwordError = passwordError);
       return;
     }
 
-    if (_password.text != _confirmPassword.text) {
+    if (_passwordController.text != _confirmController.text) {
       setState(() => _confirmError = loc.passwordMismatch);
       return;
     }
@@ -84,8 +87,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
     if (!mounted) return;
     Navigator.of(context).pop();
 
-    if (!mounted) return;
-    context.goNamed('login');
+    if (mounted) context.goNamed('login');
   }
 
   @override
@@ -101,7 +103,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Titre principal
+            // Titre principal
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -112,25 +114,25 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
             ),
             const SizedBox(height: 24),
 
-            // 🔹 Champ mot de passe
+            // Champ mot de passe
             AppTextField.password(
               hint: loc.passwordLabel,
-              controller: _password,
+              controller: _passwordController,
               errorText: _passwordError,
               onChanged: (_) => _checkFilled(),
             ),
             const SizedBox(height: 16),
 
-            // 🔹 Champ confirmation mot de passe
+            // Champ confirmation mot de passe
             AppTextField.password(
               hint: loc.passwordConfirmLabel,
-              controller: _confirmPassword,
+              controller: _confirmController,
               errorText: _confirmError,
               onChanged: (_) => _checkFilled(),
             ),
             const SizedBox(height: 20),
 
-            // 🔹 Checkbox Termes et conditions
+            // Checkbox Termes et conditions
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -180,16 +182,16 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ]
+                      ],
                     ],
                   ),
                 ),
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
-            // 🔹 Bouton Créer un compte
+            // Bouton Créer un compte
             AppButton(
               label: loc.createAccountBtn,
               enabled: _filled,
@@ -200,13 +202,16 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
 
             const SizedBox(height: 20),
 
-            // 🔹 Lien "Déjà un compte ? Connectez-vous"
+            // Lien "Déjà un compte ? Connectez-vous"
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Text(
                   loc.signupHaveAccount,
-                  style: TextStyle(color: colors.textSecondary, fontSize: 15),
+                  style: TextStyle(
+                    color: colors.textSecondary,
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(width: 6),
                 GestureDetector(
