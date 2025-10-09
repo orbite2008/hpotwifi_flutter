@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_styles.dart';
 import 'package:flutter/services.dart';
+import '../../../../core/theme/app_styles.dart';
 
+enum AppBarTitleAlignment { left, center, right }
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final AppBarTitleAlignment alignment;
 
-  const AuthAppBar({super.key, required this.title});
+  const AuthAppBar({
+    super.key,
+    required this.title,
+    this.alignment = AppBarTitleAlignment.left,
+  });
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final brightness = Theme.of(context).brightness;
 
-    // Couleur de la barre de statut (icônes réseau, heure, etc.)
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: colors.background,
       statusBarIconBrightness:
@@ -22,6 +27,18 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
       brightness == Brightness.dark ? Brightness.dark : Brightness.light,
     ));
 
+    MainAxisAlignment alignmentMode;
+    switch (alignment) {
+      case AppBarTitleAlignment.left:
+        alignmentMode = MainAxisAlignment.start;
+        break;
+      case AppBarTitleAlignment.right:
+        alignmentMode = MainAxisAlignment.end;
+        break;
+      default:
+        alignmentMode = MainAxisAlignment.center;
+    }
+
     return AppBar(
       backgroundColor: colors.surface,
       elevation: 0,
@@ -29,9 +46,8 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       toolbarHeight: 64,
-      centerTitle: true,
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: alignmentMode,
         children: [
           const Icon(Icons.wifi, color: Color(0xFF0C60AF)),
           const SizedBox(width: 8),
@@ -40,11 +56,11 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(
               color: colors.textPrimary,
               fontWeight: FontWeight.w600,
+              fontSize: 18,
             ),
           ),
         ],
       ),
-      // 🔹 Fine ombre subtile en bas
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
         child: Container(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Thème adaptatif clair/sombre
+/// 🎨 Thème adaptatif clair/sombre
 class AppColors {
   final Color primary;
   final Color background;
@@ -14,12 +14,16 @@ class AppColors {
   final Color buttonInactive;
   final Color buttonActive;
   final Color error;
+
+  // Spécifiques aux hotspots
   final Color cardBackground;
   final Color cardBorder;
-  final Color ownerBadge;
-  final Color assistantBadge;
   final Color statusActive;
   final Color separatorLight;
+
+  // Couleurs de badge (rôle)
+  final Color ownerBadge;
+  final Color assistantBadge;
 
   const AppColors({
     required this.primary,
@@ -36,15 +40,15 @@ class AppColors {
     required this.error,
     required this.cardBackground,
     required this.cardBorder,
-    required this.ownerBadge,
-    required this.assistantBadge,
     required this.statusActive,
     required this.separatorLight,
+    required this.ownerBadge,
+    required this.assistantBadge,
   });
 
   /// Palette claire
   static const light = AppColors(
-    primary: Color(0xFF7DAAEF),
+    primary: Color(0xFF0C60AF),
     background: Color(0xFFF9F9F9),
     surface: Colors.white,
     border: Color(0xFFE0E0E0),
@@ -56,13 +60,16 @@ class AppColors {
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
     error: Color(0xFFE53935),
-    // Couleurs des cartes hotspot
-    cardBackground: Color(0xFFF2F6FF), // ✅ F2F6FF
-    cardBorder: Color(0xFF685DFF),     // ✅ 685DFF
-    ownerBadge: Color(0xFF9AC3FF),     // ✅ 9AC3FF
-    assistantBadge: Color(0xFF9E9E9E),
+
+    // Hotspots
+    cardBackground: Color(0xFFF2F6FF),
+    cardBorder: Color(0xFF685DFF),
     statusActive: Color(0xFF4CAF50),
     separatorLight: Color(0x1A000000),
+
+    // Badges
+    ownerBadge: Color(0xFF9AC3FF),
+    assistantBadge: Color(0xFFB0B0B0),
   );
 
   /// Palette sombre
@@ -79,16 +86,19 @@ class AppColors {
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
     error: Color(0xFFEF5350),
-    // Couleurs des cartes hotspot (mode sombre)
+
+    // Hotspots
     cardBackground: Color(0xFF1E1E2E),
-    cardBorder: Color(0xFF685DFF),     // ✅ 685DFF
-    ownerBadge: Color(0xFF9AC3FF),     // ✅ 9AC3FF
-    assistantBadge: Color(0xFF9E9E9E),
+    cardBorder: Color(0xFF685DFF),
     statusActive: Color(0xFF4CAF50),
     separatorLight: Color(0x1AFFFFFF),
+
+    // Badges
+    ownerBadge: Color(0xFF5C8EDC),
+    assistantBadge: Color(0xFF666666),
   );
 
-  /// Récupère la palette active selon le thème
+  /// Sélecteur de palette selon le thème
   static AppColors of(BuildContext context) {
     final brightness = Theme.of(context).brightness;
     return brightness == Brightness.dark ? dark : light;
