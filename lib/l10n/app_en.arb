@@ -4,9 +4,7 @@
   "welcome": "Welcome to Hotspot Wifi",
   "language": "Language",
   "darkMode": "Dark mode",
-
   "loading": "Loading...",
-
 
   "signupCreateAccountTitle": "Create account",
   "signupEnterEmailSubtitle": "Enter your email for validation",
@@ -39,7 +37,6 @@
   "createAccountBtn": "Create account",
   "accountCreatedMessage": "Account created successfully!",
 
-
   "loginTitle": "Log in",
   "loginSubtitle": "Enter your credentials to log in",
   "emailLabel": "Email",
@@ -51,7 +48,6 @@
   "emailRequired": "Email is required.",
   "loginSuccess": "Login successful!",
   "loginFailed": "Login failed. Please check your information.",
-
 
   "forgotPasswordTitle": "Forgot your password?",
   "forgotPasswordSubtitle": "Enter your email address to receive a reset link.",
@@ -67,8 +63,36 @@
   "passwordTooShort": "Password must be at least 6 characters long.",
   "passwordConfirmRequired": "Please confirm your password.",
   "phoneRequired": "Phone number is required.",
-  "phoneInvalid": "Invalid phone number."
+  "phoneInvalid": "Invalid phone number.",
 
+  "greeting": "Hi, {name}!",
+  "@greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "searchHotspots": "Search hotspots",
+  "myHotspots": "My hotspots",
+  "wifiZone": "Wifi Zone {number}",
+  "@wifiZone": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySale": "Daily sale",
+  "online": "online",
+  "users": "users",
+  "owner": "Owner",
+  "assistant": "Assistant",
+  "fcfa": "f",
 
-
+  "addHotspot": "Add a hotspot",
+  "packageManagement": "Package management",
+  "mySellers": "My sellers",
+  "language": "Language",
+  "logout": "Logout"
 }

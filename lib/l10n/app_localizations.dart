@@ -430,6 +430,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid phone number.'**
   String get phoneInvalid;
+
+  /// No description provided for @greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi, {name}!'**
+  String greeting(String name);
+
+  /// No description provided for @searchHotspots.
+  ///
+  /// In en, this message translates to:
+  /// **'Search hotspots'**
+  String get searchHotspots;
+
+  /// No description provided for @myHotspots.
+  ///
+  /// In en, this message translates to:
+  /// **'My hotspots'**
+  String get myHotspots;
+
+  /// No description provided for @wifiZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Wifi Zone {number}'**
+  String wifiZone(String number);
+
+  /// No description provided for @dailySale.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily sale'**
+  String get dailySale;
+
+  /// No description provided for @online.
+  ///
+  /// In en, this message translates to:
+  /// **'online'**
+  String get online;
+
+  /// No description provided for @users.
+  ///
+  /// In en, this message translates to:
+  /// **'users'**
+  String get users;
+
+  /// No description provided for @owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get owner;
+
+  /// No description provided for @assistant.
+  ///
+  /// In en, this message translates to:
+  /// **'Assistant'**
+  String get assistant;
+
+  /// No description provided for @fcfa.
+  ///
+  /// In en, this message translates to:
+  /// **'f'**
+  String get fcfa;
+
+  /// No description provided for @addHotspot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a hotspot'**
+  String get addHotspot;
+
+  /// No description provided for @packageManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Package management'**
+  String get packageManagement;
+
+  /// No description provided for @mySellers.
+  ///
+  /// In en, this message translates to:
+  /// **'My sellers'**
+  String get mySellers;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

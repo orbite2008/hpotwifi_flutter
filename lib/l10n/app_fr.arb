@@ -4,9 +4,7 @@
   "welcome": "Bienvenue dans Hotspot Wifi",
   "language": "Langue",
   "darkMode": "Mode sombre",
-
   "loading": "Chargement en cours...",
-
 
   "signupCreateAccountTitle": "Création de compte",
   "signupEnterEmailSubtitle": "Entrez votre email pour une validation",
@@ -49,7 +47,7 @@
   "invalidCredentials": "Email ou mot de passe incorrect.",
   "emailRequired": "L'email est requis.",
   "loginSuccess": "Connexion réussie !",
-  "loginFailed": "Connexion échouée. Vérifiez vos informations.",
+  "loginFailed": "Échec de connexion. Veuillez vérifier vos informations.",
 
   "forgotPasswordTitle": "Mot de passe oublié ?",
   "forgotPasswordSubtitle": "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.",
@@ -58,15 +56,43 @@
   "checkYourEmail": "Veuillez vérifier votre boîte mail pour continuer.",
 
   "resetPasswordTitle": "Créer un nouveau mot de passe",
-  "resetPasswordSubtitle": "Veuillez entrer le nouveau mot de passe",
-  "resetPasswordButton": "Modifier le mot de passe",
+  "resetPasswordSubtitle": "Veuillez entrer votre nouveau mot de passe",
+  "resetPasswordButton": "Changer le mot de passe",
 
-  "passwordResetSuccessTitle": "Votre mot de passe a été modifié avec succès.",
+  "passwordResetSuccessTitle": "Votre mot de passe a été mis à jour avec succès.",
   "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères.",
   "passwordConfirmRequired": "Veuillez confirmer votre mot de passe.",
   "phoneRequired": "Le numéro de téléphone est requis.",
-  "phoneInvalid": "Numéro de téléphone invalide."
+  "phoneInvalid": "Numéro de téléphone invalide.",
 
+  "greeting": "Salut, {name} !",
+  "@greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "searchHotspots": "Rechercher un hotspot",
+  "myHotspots": "Mes hotspots",
+  "wifiZone": "Wifi Zone {number}",
+  "@wifiZone": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySale": "Vente du jour",
+  "online": "online",
+  "users": "utilisateurs",
+  "owner": "Propriétaire",
+  "assistant": "Assistant",
+  "fcfa": "f",
 
-
+  "addHotspot": "Ajouter un hospot",
+  "packageManagement": "Gestion des forfaits",
+  "mySellers": "Mes vendeurs",
+  "language": "Langue",
+  "logout": "Déconnexion"
 }

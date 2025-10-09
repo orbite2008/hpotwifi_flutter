@@ -175,4 +175,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phoneInvalid => 'Invalid phone number.';
+
+  @override
+  String greeting(String name) {
+    return 'Hi, $name!';
+  }
+
+  @override
+  String get searchHotspots => 'Search hotspots';
+
+  @override
+  String get myHotspots => 'My hotspots';
+
+  @override
+  String wifiZone(String number) {
+    return 'Wifi Zone $number';
+  }
+
+  @override
+  String get dailySale => 'Daily sale';
+
+  @override
+  String get online => 'online';
+
+  @override
+  String get users => 'users';
+
+  @override
+  String get owner => 'Owner';
+
+  @override
+  String get assistant => 'Assistant';
+
+  @override
+  String get fcfa => 'f';
+
+  @override
+  String get addHotspot => 'Add a hotspot';
+
+  @override
+  String get packageManagement => 'Package management';
+
+  @override
+  String get mySellers => 'My sellers';
+
+  @override
+  String get logout => 'Logout';
 }

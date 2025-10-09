@@ -14,6 +14,12 @@ class AppColors {
   final Color buttonInactive;
   final Color buttonActive;
   final Color error;
+  final Color cardBackground;
+  final Color cardBorder;
+  final Color ownerBadge;
+  final Color assistantBadge;
+  final Color statusActive;
+  final Color separatorLight;
 
   const AppColors({
     required this.primary,
@@ -28,6 +34,12 @@ class AppColors {
     required this.buttonInactive,
     required this.buttonActive,
     required this.error,
+    required this.cardBackground,
+    required this.cardBorder,
+    required this.ownerBadge,
+    required this.assistantBadge,
+    required this.statusActive,
+    required this.separatorLight,
   });
 
   /// Palette claire
@@ -44,6 +56,13 @@ class AppColors {
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
     error: Color(0xFFE53935),
+    // Couleurs des cartes hotspot
+    cardBackground: Color(0xFFF2F6FF), // ✅ F2F6FF
+    cardBorder: Color(0xFF685DFF),     // ✅ 685DFF
+    ownerBadge: Color(0xFF9AC3FF),     // ✅ 9AC3FF
+    assistantBadge: Color(0xFF9E9E9E),
+    statusActive: Color(0xFF4CAF50),
+    separatorLight: Color(0x1A000000),
   );
 
   /// Palette sombre
@@ -60,6 +79,13 @@ class AppColors {
     buttonInactive: Color(0xFF86ACD7),
     buttonActive: Color(0xFF0C60AF),
     error: Color(0xFFEF5350),
+    // Couleurs des cartes hotspot (mode sombre)
+    cardBackground: Color(0xFF1E1E2E),
+    cardBorder: Color(0xFF685DFF),     // ✅ 685DFF
+    ownerBadge: Color(0xFF9AC3FF),     // ✅ 9AC3FF
+    assistantBadge: Color(0xFF9E9E9E),
+    statusActive: Color(0xFF4CAF50),
+    separatorLight: Color(0x1AFFFFFF),
   );
 
   /// Récupère la palette active selon le thème

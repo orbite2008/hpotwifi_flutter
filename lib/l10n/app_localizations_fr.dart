@@ -135,7 +135,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loginSuccess => 'Connexion réussie !';
 
   @override
-  String get loginFailed => 'Connexion échouée. Vérifiez vos informations.';
+  String get loginFailed => 'Échec de connexion. Veuillez vérifier vos informations.';
 
   @override
   String get forgotPasswordTitle => 'Mot de passe oublié ?';
@@ -156,13 +156,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resetPasswordTitle => 'Créer un nouveau mot de passe';
 
   @override
-  String get resetPasswordSubtitle => 'Veuillez entrer le nouveau mot de passe';
+  String get resetPasswordSubtitle => 'Veuillez entrer votre nouveau mot de passe';
 
   @override
-  String get resetPasswordButton => 'Modifier le mot de passe';
+  String get resetPasswordButton => 'Changer le mot de passe';
 
   @override
-  String get passwordResetSuccessTitle => 'Votre mot de passe a été modifié avec succès.';
+  String get passwordResetSuccessTitle => 'Votre mot de passe a été mis à jour avec succès.';
 
   @override
   String get passwordTooShort => 'Le mot de passe doit contenir au moins 6 caractères.';
@@ -175,4 +175,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get phoneInvalid => 'Numéro de téléphone invalide.';
+
+  @override
+  String greeting(String name) {
+    return 'Salut, $name !';
+  }
+
+  @override
+  String get searchHotspots => 'Rechercher un hotspot';
+
+  @override
+  String get myHotspots => 'Mes hotspots';
+
+  @override
+  String wifiZone(String number) {
+    return 'Wifi Zone $number';
+  }
+
+  @override
+  String get dailySale => 'Vente du jour';
+
+  @override
+  String get online => 'online';
+
+  @override
+  String get users => 'utilisateurs';
+
+  @override
+  String get owner => 'Propriétaire';
+
+  @override
+  String get assistant => 'Assistant';
+
+  @override
+  String get fcfa => 'f';
+
+  @override
+  String get addHotspot => 'Ajouter un hospot';
+
+  @override
+  String get packageManagement => 'Gestion des forfaits';
+
+  @override
+  String get mySellers => 'Mes vendeurs';
+
+  @override
+  String get logout => 'Déconnexion';
 }
