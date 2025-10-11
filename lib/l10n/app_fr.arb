@@ -93,6 +93,10 @@
   "addHotspot": "Ajouter un hospot",
   "packageManagement": "Gestion des forfaits",
   "mySellers": "Mes vendeurs",
-  "language": "Langue",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "manageTickets": "Gestion des tickets",
+  "report": "Rapport",
+  "myProfile": "Mon profil"
+
+
 }

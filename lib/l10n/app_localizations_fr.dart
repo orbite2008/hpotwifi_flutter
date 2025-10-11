@@ -221,4 +221,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get logout => 'Déconnexion';
+
+  @override
+  String get manageTickets => 'Gestion des tickets';
+
+  @override
+  String get report => 'Rapport';
+
+  @override
+  String get myProfile => 'Mon profil';
 }

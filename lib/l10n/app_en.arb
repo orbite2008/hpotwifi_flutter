@@ -93,6 +93,9 @@
   "addHotspot": "Add a hotspot",
   "packageManagement": "Package management",
   "mySellers": "My sellers",
-  "language": "Language",
-  "logout": "Logout"
+  "logout": "Logout",
+  "manageTickets": "Ticket management",
+  "report": "Rapport",
+  "myProfile": "My profile"
+
 }

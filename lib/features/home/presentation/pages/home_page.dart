@@ -4,7 +4,6 @@ import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../controllers/home_controller.dart';
-import '../widgets/app_drawer.dart';
 import '../widgets/hotspot_list_view.dart';
 import '../widgets/user_greeting_section.dart';
 import 'home_loading_view.dart';
@@ -38,11 +37,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: colors.background,
-        drawer: const AppDrawer(),
         appBar: const AuthAppBar(
           title: "HpotWifi",
-          alignment: AppBarTitleAlignment.right,
+          showReportButton: true,
+          showTicketButton: true,
         ),
+
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,71 +59,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: hotspotsState.when(
-                loading: () => Row(
-                  children: [
-                    Text(
-                      loc.myHotspots,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: colors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      width: 40,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        color:
-                        colors.textSecondary.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ],
-                ),
-                error: (_, __) => Text(
-                  loc.myHotspots,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: colors.textPrimary,
-                  ),
-                ),
+                loading: () => _buildHeaderSkeleton(colors, loc),
+                error: (_, __) => _buildHeader(loc, colors, 0, 0),
                 data: (list) {
                   final total = list.length;
                   final active = list.where((h) => h.isActive).length;
-                  return Row(
-                    children: [
-                      Text(
-                        loc.myHotspots,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: colors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colors.textSecondary
-                              .withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '${active.toString().padLeft(2, '0')}/${total.toString().padLeft(2, '0')}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                  return _buildHeader(loc, colors, active, total);
                 },
               ),
             ),
@@ -168,6 +109,62 @@ class _HomePageState extends ConsumerState<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(
+      AppLocalizations loc, AppColors colors, int active, int total) {
+    return Row(
+      children: [
+        Text(
+          loc.myHotspots,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: colors.textPrimary,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: colors.textSecondary.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            '${active.toString().padLeft(2, '0')}/${total.toString().padLeft(2, '0')}',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: colors.textSecondary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderSkeleton(AppColors colors, AppLocalizations loc) {
+    return Row(
+      children: [
+        Text(
+          loc.myHotspots,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: colors.textPrimary,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Container(
+          width: 40,
+          height: 18,
+          decoration: BoxDecoration(
+            color: colors.textSecondary.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ],
     );
   }
 }

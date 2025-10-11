@@ -514,6 +514,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// No description provided for @manageTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket management'**
+  String get manageTickets;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Rapport'**
+  String get report;
+
+  /// No description provided for @myProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get myProfile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
