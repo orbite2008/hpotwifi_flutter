@@ -226,8 +226,100 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageTickets => 'Ticket management';
 
   @override
-  String get report => 'Rapport';
+  String get report => 'Report';
 
   @override
   String get myProfile => 'My profile';
+
+  @override
+  String get addHotspotTitle => 'Add a hotspot';
+
+  @override
+  String get wifiNameLabel => 'Wifi name';
+
+  @override
+  String get wifiNameHint => 'Enter the wifi name';
+
+  @override
+  String get cityHint => 'City';
+
+  @override
+  String get districtLabel => 'District';
+
+  @override
+  String get districtHint => 'District';
+
+  @override
+  String get zoneLabel => 'Zone';
+
+  @override
+  String get zoneHint => 'Zone';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get descriptionHint => 'Description';
+
+  @override
+  String get addButton => 'Add';
+
+  @override
+  String get fieldRequired => 'This field is required';
+
+  @override
+  String hotspotWillBeCreated(String name) {
+    return 'Hotspot \"$name\" will be created (feature to be implemented)';
+  }
+
+  @override
+  String get editHotspotTitle => 'Edit a hotspot';
+
+  @override
+  String get serverNameLabel => 'Server name:';
+
+  @override
+  String get routerNameLabel => 'Router name:';
+
+  @override
+  String get bridgeNameLabel => 'Bridge name:';
+
+  @override
+  String get editButton => 'Edit';
+
+  @override
+  String get hotspotUpdatedSuccess => 'Hotspot updated successfully (feature to be implemented)';
+
+  @override
+  String get graph => 'Graph';
+
+  @override
+  String get userList => 'User list';
+
+  @override
+  String get activationHistory => 'Activation history';
+
+  @override
+  String get ticketManagement => 'Ticket management';
+
+  @override
+  String get zone => 'Zone:';
+
+  @override
+  String get wifiName => 'Wifi name:';
+
+  @override
+  String get district => 'District:';
+
+  @override
+  String get city => 'City:';
+
+  @override
+  String get connected => 'Connected';
+
+  @override
+  String get disconnected => 'Disconnected';
+
+  @override
+  String get package => 'Package';
 }

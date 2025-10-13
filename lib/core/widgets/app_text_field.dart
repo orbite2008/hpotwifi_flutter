@@ -1,3 +1,5 @@
+// lib/core/widgets/app_text_field.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../theme/app_styles.dart';
@@ -14,6 +16,7 @@ class AppTextField extends StatefulWidget {
   final String? errorText;
   final void Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final int? maxLines; // ✅ AJOUT ICI
 
   const AppTextField({
     super.key,
@@ -27,6 +30,7 @@ class AppTextField extends StatefulWidget {
     this.errorText,
     this.onChanged,
     this.inputFormatters,
+    this.maxLines, // ✅ AJOUT ICI
   });
 
   /// Champ préconfiguré pour e-mail
@@ -85,6 +89,7 @@ class _AppTextFieldState extends State<AppTextField> {
       enabled: widget.enabled,
       inputFormatters: widget.inputFormatters,
       onChanged: widget.onChanged,
+      maxLines: widget.maxLines ?? 1, // ✅ AJOUT ICI
       style: AppTextStyles.body.copyWith(
         color: widget.enabled ? colors.textPrimary : colors.textSecondary,
       ),
@@ -99,26 +104,25 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         prefixIcon: widget.prefixIcon != null
             ? IconTheme(
-          data: IconThemeData(color: colors.hint),
-          child: widget.prefixIcon!,
-        )
+                data: IconThemeData(color: colors.hint),
+                child: widget.prefixIcon!,
+              )
             : null,
         suffixIcon: widget.obscureText
             ? IconButton(
-          icon: Icon(
-            _obscured
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
-            color: colors.hint,
-          ),
-          onPressed: () => setState(() => _obscured = !_obscured),
-        )
+                icon: Icon(
+                  _obscured
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: colors.hint,
+                ),
+                onPressed: () => setState(() => _obscured = !_obscured),
+              )
             : widget.suffixIcon,
         filled: true,
         fillColor: widget.enabled ? colors.inputFill : colors.disabled,
         contentPadding:
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         // Bordures adaptatives
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.medium),

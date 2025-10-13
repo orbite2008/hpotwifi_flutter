@@ -211,7 +211,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fcfa => 'f';
 
   @override
-  String get addHotspot => 'Ajouter un hospot';
+  String get addHotspot => 'Ajouter un hotspot';
 
   @override
   String get packageManagement => 'Gestion des forfaits';
@@ -230,4 +230,96 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get myProfile => 'Mon profil';
+
+  @override
+  String get addHotspotTitle => 'Ajouter un hotspot';
+
+  @override
+  String get wifiNameLabel => 'Nom du wifi';
+
+  @override
+  String get wifiNameHint => 'Entrez le nom du wifi';
+
+  @override
+  String get cityHint => 'Ville';
+
+  @override
+  String get districtLabel => 'Quartier';
+
+  @override
+  String get districtHint => 'Quartier';
+
+  @override
+  String get zoneLabel => 'Zone';
+
+  @override
+  String get zoneHint => 'Zone';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get descriptionHint => 'Description';
+
+  @override
+  String get addButton => 'Ajouter';
+
+  @override
+  String get fieldRequired => 'Ce champ est requis';
+
+  @override
+  String hotspotWillBeCreated(String name) {
+    return 'Hotspot \"$name\" sera créé (fonctionnalité à implémenter)';
+  }
+
+  @override
+  String get editHotspotTitle => 'Modifier un hospot';
+
+  @override
+  String get serverNameLabel => 'Nom du serveur:';
+
+  @override
+  String get routerNameLabel => 'Nom du routeur:';
+
+  @override
+  String get bridgeNameLabel => 'Nom du bridge:';
+
+  @override
+  String get editButton => 'Modifier';
+
+  @override
+  String get hotspotUpdatedSuccess => 'Hotspot modifié avec succès (fonctionnalité à implémenter)';
+
+  @override
+  String get graph => 'Graphe';
+
+  @override
+  String get userList => 'Liste des utilisateurs';
+
+  @override
+  String get activationHistory => 'Historique d\'activation';
+
+  @override
+  String get ticketManagement => 'Gestion des tickets';
+
+  @override
+  String get zone => 'Zone:';
+
+  @override
+  String get wifiName => 'Nom wifi:';
+
+  @override
+  String get district => 'Quartier:';
+
+  @override
+  String get city => 'Ville:';
+
+  @override
+  String get connected => 'Connecté';
+
+  @override
+  String get disconnected => 'Déconnecté';
+
+  @override
+  String get package => 'Forfait de';
 }

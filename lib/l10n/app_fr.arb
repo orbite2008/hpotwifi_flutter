@@ -90,13 +90,51 @@
   "assistant": "Assistant",
   "fcfa": "f",
 
-  "addHotspot": "Ajouter un hospot",
+  "addHotspot": "Ajouter un hotspot",
   "packageManagement": "Gestion des forfaits",
   "mySellers": "Mes vendeurs",
   "logout": "Déconnexion",
   "manageTickets": "Gestion des tickets",
   "report": "Rapport",
-  "myProfile": "Mon profil"
+  "myProfile": "Mon profil",
 
+  "addHotspotTitle": "Ajouter un hotspot",
+  "wifiNameLabel": "Nom du wifi",
+  "wifiNameHint": "Entrez le nom du wifi",
+  "cityHint": "Ville",
+  "districtLabel": "Quartier",
+  "districtHint": "Quartier",
+  "zoneLabel": "Zone",
+  "zoneHint": "Zone",
+  "descriptionLabel": "Description",
+  "descriptionHint": "Description",
+  "addButton": "Ajouter",
+  "fieldRequired": "Ce champ est requis",
+  "hotspotWillBeCreated": "Hotspot \"{name}\" sera créé (fonctionnalité à implémenter)",
+  "@hotspotWillBeCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+    "editHotspotTitle": "Modifier un hospot",
+  "serverNameLabel": "Nom du serveur:",
+  "routerNameLabel": "Nom du routeur:",
+  "bridgeNameLabel": "Nom du bridge:",
+  "editButton": "Modifier",
+  "hotspotUpdatedSuccess": "Hotspot modifié avec succès (fonctionnalité à implémenter)",
+  
+  "graph": "Graphe",
+  "userList": "Liste des utilisateurs",
+  "activationHistory": "Historique d'activation",
+  "ticketManagement": "Gestion des tickets",
+  "zone": "Zone:",
+  "wifiName": "Nom wifi:",
+  "district": "Quartier:",
+  "city": "Ville:",
+  "connected": "Connecté",
+  "disconnected": "Déconnecté",
+  "package": "Forfait de"
 
 }

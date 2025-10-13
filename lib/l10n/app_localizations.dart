@@ -524,7 +524,7 @@ abstract class AppLocalizations {
   /// No description provided for @report.
   ///
   /// In en, this message translates to:
-  /// **'Rapport'**
+  /// **'Report'**
   String get report;
 
   /// No description provided for @myProfile.
@@ -532,6 +532,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My profile'**
   String get myProfile;
+
+  /// No description provided for @addHotspotTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a hotspot'**
+  String get addHotspotTitle;
+
+  /// No description provided for @wifiNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wifi name'**
+  String get wifiNameLabel;
+
+  /// No description provided for @wifiNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the wifi name'**
+  String get wifiNameHint;
+
+  /// No description provided for @cityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get cityHint;
+
+  /// No description provided for @districtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get districtLabel;
+
+  /// No description provided for @districtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get districtHint;
+
+  /// No description provided for @zoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Zone'**
+  String get zoneLabel;
+
+  /// No description provided for @zoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Zone'**
+  String get zoneHint;
+
+  /// No description provided for @descriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionLabel;
+
+  /// No description provided for @descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionHint;
+
+  /// No description provided for @addButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addButton;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// No description provided for @hotspotWillBeCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot \"{name}\" will be created (feature to be implemented)'**
+  String hotspotWillBeCreated(String name);
+
+  /// No description provided for @editHotspotTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit a hotspot'**
+  String get editHotspotTitle;
+
+  /// No description provided for @serverNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Server name:'**
+  String get serverNameLabel;
+
+  /// No description provided for @routerNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Router name:'**
+  String get routerNameLabel;
+
+  /// No description provided for @bridgeNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bridge name:'**
+  String get bridgeNameLabel;
+
+  /// No description provided for @editButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editButton;
+
+  /// No description provided for @hotspotUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot updated successfully (feature to be implemented)'**
+  String get hotspotUpdatedSuccess;
+
+  /// No description provided for @graph.
+  ///
+  /// In en, this message translates to:
+  /// **'Graph'**
+  String get graph;
+
+  /// No description provided for @userList.
+  ///
+  /// In en, this message translates to:
+  /// **'User list'**
+  String get userList;
+
+  /// No description provided for @activationHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Activation history'**
+  String get activationHistory;
+
+  /// No description provided for @ticketManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket management'**
+  String get ticketManagement;
+
+  /// No description provided for @zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Zone:'**
+  String get zone;
+
+  /// No description provided for @wifiName.
+  ///
+  /// In en, this message translates to:
+  /// **'Wifi name:'**
+  String get wifiName;
+
+  /// No description provided for @district.
+  ///
+  /// In en, this message translates to:
+  /// **'District:'**
+  String get district;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City:'**
+  String get city;
+
+  /// No description provided for @connected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get connected;
+
+  /// No description provided for @disconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected'**
+  String get disconnected;
+
+  /// No description provided for @package.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get package;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

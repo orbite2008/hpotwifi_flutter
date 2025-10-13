@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/home/domain/entities/hotspot_entity.dart';
+import '../../features/home/presentation/pages/add_hotspot_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/home/presentation/pages/hotspot_detail_page.dart';
 import '../../features/presentation/pages/settings_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
@@ -45,11 +48,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/auth/reset-success', name: 'resetSuccess', builder: (_, __) => const ResetSuccessPage()),
 
       // --- Pages du menu ---
-      GoRoute(path: '/add-hotspot', name: 'addHotspot', builder: (_, __) => const PlaceholderPage(title: 'Ajouter un hotspot')),
+      GoRoute(path: '/add-hotspot', name: 'addHotspot',   builder: (context, state) => const AddHotspotPage()),
       GoRoute(path: '/tickets', name: 'tickets', builder: (_, __) => const PlaceholderPage(title: 'Gestion des tickets')),
       GoRoute(path: '/sellers', name: 'sellers', builder: (_, __) => const PlaceholderPage(title: 'Mes vendeurs')),
       GoRoute(path: '/report', name: 'report', builder: (_, __) => const PlaceholderPage(title: 'Rapport')),
       GoRoute(path: '/profile', name: 'profile', builder: (_, __) => const PlaceholderPage(title: 'Mon profil')),
+
+
+    GoRoute(
+        path: '/hotspot-detail',
+        name: 'hotspotDetail',
+        builder: (context, state) {
+          final hotspot = state.extra as HotspotEntity?;
+          return HotspotDetailPage(hotspot: hotspot);
+        },
+      ),
     ],
   );
 });

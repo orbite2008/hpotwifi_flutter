@@ -95,7 +95,47 @@
   "mySellers": "My sellers",
   "logout": "Logout",
   "manageTickets": "Ticket management",
-  "report": "Rapport",
-  "myProfile": "My profile"
+  "report": "Report",
+  "myProfile": "My profile",
+
+  "addHotspotTitle": "Add a hotspot",
+  "wifiNameLabel": "Wifi name",
+  "wifiNameHint": "Enter the wifi name",
+  "cityHint": "City",
+  "districtLabel": "District",
+  "districtHint": "District",
+  "zoneLabel": "Zone",
+  "zoneHint": "Zone",
+  "descriptionLabel": "Description",
+  "descriptionHint": "Description",
+  "addButton": "Add",
+  "fieldRequired": "This field is required",
+  "hotspotWillBeCreated": "Hotspot \"{name}\" will be created (feature to be implemented)",
+  "@hotspotWillBeCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "editHotspotTitle": "Edit a hotspot",
+  "serverNameLabel": "Server name:",
+  "routerNameLabel": "Router name:",
+  "bridgeNameLabel": "Bridge name:",
+  "editButton": "Edit",
+  "hotspotUpdatedSuccess": "Hotspot updated successfully (feature to be implemented)",
+
+  "graph": "Graph",
+  "userList": "User list",
+  "activationHistory": "Activation history",
+  "ticketManagement": "Ticket management",
+  "zone": "Zone:",
+  "wifiName": "Wifi name:",
+  "district": "District:",
+  "city": "City:",
+  "connected": "Connected",
+  "disconnected": "Disconnected",
+  "package": "Package"
+
 
 }

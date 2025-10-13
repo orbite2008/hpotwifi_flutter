@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -49,9 +50,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             UserGreetingSection(
               userName: 'Tynisha',
               searchController: _search,
-              onChanged: (value) => ref
-                  .read(hotspotSearchQueryProvider.notifier)
-                  .state = value,
+              onChanged:
+                  (value) =>
+                      ref.read(hotspotSearchQueryProvider.notifier).state =
+                          value,
             ),
             const SizedBox(height: 16),
 
@@ -75,32 +77,39 @@ class _HomePageState extends ConsumerState<HomePage> {
             Expanded(
               child: hotspotsState.when(
                 loading: () => const HomeLoadingView(),
-                error: (e, _) => HomeErrorView(
-                  message: e.toString(),
-                  onRetry: () =>
-                      ref.read(homeControllerProvider.notifier).refresh(),
-                ),
+                error:
+                    (e, _) => HomeErrorView(
+                      message: e.toString(),
+                      onRetry:
+                          () =>
+                              ref
+                                  .read(homeControllerProvider.notifier)
+                                  .refresh(),
+                    ),
                 data: (list) {
                   final q = query.toLowerCase().trim();
-                  final filtered = q.isEmpty
-                      ? list
-                      : list
-                      .where((h) =>
-                  h.name.toLowerCase().contains(q) ||
-                      h.wifiZone.toLowerCase().contains(q))
-                      .toList();
+                  final filtered =
+                      q.isEmpty
+                          ? list
+                          : list
+                              .where(
+                                (h) =>
+                                    h.name.toLowerCase().contains(q) ||
+                                    h.wifiZone.toLowerCase().contains(q),
+                              )
+                              .toList();
 
-                  final adjusted = filtered.map((h) {
-                    if (!h.isActive && h.usersOnline > 0) {
-                      return h.copyWith(usersOnline: 0);
-                    }
-                    return h;
-                  }).toList();
-
+                  final adjusted =
+                      filtered.map((h) {
+                        if (!h.isActive && h.usersOnline > 0) {
+                          return h.copyWith(usersOnline: 0);
+                        }
+                        return h;
+                      }).toList();
                   return HotspotListView(
                     hotspots: adjusted,
                     onTapHotspot: (h) {
-                      debugPrint("Hotspot sélectionné : ${h.name}");
+                      context.pushNamed('hotspotDetail', extra: h);
                     },
                   );
                 },
@@ -113,7 +122,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget _buildHeader(
-      AppLocalizations loc, AppColors colors, int active, int total) {
+    AppLocalizations loc,
+    AppColors colors,
+    int active,
+    int total,
+  ) {
     return Row(
       children: [
         Text(
