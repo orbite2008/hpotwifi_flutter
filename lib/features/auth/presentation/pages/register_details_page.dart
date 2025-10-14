@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
@@ -21,37 +22,47 @@ class RegisterDetailsPage extends ConsumerStatefulWidget {
 class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
   final _nomController = TextEditingController();
   final _prenomController = TextEditingController();
-  final _numeroController = TextEditingController();
   final _villeController = TextEditingController();
-  String? _pays;
+  final _phoneController = TextEditingController();
+
+  String? _fullPhone;
+  final String _countryCode = '229';
   bool _filled = false;
-  String? _errorCountry;
   String? _phoneError;
 
-  final List<String> _paysList = [
-    'Bénin',
-    'Côte d’Ivoire',
-    'France',
-    'Togo',
-    'Sénégal',
-    'Nigéria',
-  ];
+  late final String _email;
+  bool _initialized = false; // évite la double initialisation
 
   @override
   void initState() {
     super.initState();
     _nomController.addListener(_checkFilled);
     _prenomController.addListener(_checkFilled);
-    _numeroController.addListener(_checkFilled);
     _villeController.addListener(_checkFilled);
+    _phoneController.addListener(_checkFilled);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+
+    final extra = GoRouterState.of(context).extra;
+    if (extra is Map && extra['email'] is String) {
+      _email = extra['email'] as String;
+    } else {
+      _email = '';
+    }
+
+    _initialized = true;
   }
 
   @override
   void dispose() {
     _nomController.dispose();
     _prenomController.dispose();
-    _numeroController.dispose();
     _villeController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -59,42 +70,45 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
     setState(() {
       _filled = _nomController.text.isNotEmpty &&
           _prenomController.text.isNotEmpty &&
-          _numeroController.text.isNotEmpty &&
           _villeController.text.isNotEmpty &&
-          _pays != null;
-      _errorCountry = null;
+          _phoneController.text.isNotEmpty;
       _phoneError = null;
     });
   }
 
-  /// Validation et navigation
+  /// ✅ Vérifie que le numéro fait 10 chiffres et commence par "01"
+  bool _isValidBeninPhone(String phone) {
+    final regex = RegExp(r'^01\d{8}$'); // commence par 01 + 8 chiffres
+    return regex.hasMatch(phone);
+  }
+
   Future<void> _onContinue() async {
     FocusScope.of(context).unfocus();
     final loc = AppLocalizations.of(context)!;
 
-    // ✅ Validation du pays
-    if (_pays == null || _pays!.isEmpty) {
-      setState(() => _errorCountry = loc.countryRequired);
+    final phone = _phoneController.text.trim();
+
+    if (!_isValidBeninPhone(phone)) {
+      setState(() => _phoneError =
+      "Le numéro doit commencer par 01 et comporter 10 chiffres.");
       return;
     }
 
-    // ✅ Validation du numéro
-    final phoneError =
-    FormValidators.validatePhone(context, _numeroController.text);
-    if (phoneError != null) {
-      setState(() => _phoneError = phoneError);
-      return;
-    }
+    _fullPhone = '+$_countryCode$phone';
 
-    // ✅ Affiche le loader
     await showAppLoader(context, message: loc.loading);
     await Future.delayed(const Duration(seconds: 1));
-
     if (!mounted) return;
-    Navigator.of(context).pop(); // Ferme le loader
+    Navigator.of(context).pop();
 
-    // ✅ Navigation vers la page de mot de passe
-    context.goNamed('registerPassword');
+    context.goNamed('registerPassword', extra: {
+      'email': _email,
+      'firstName': _prenomController.text.trim(),
+      'lastName': _nomController.text.trim(),
+      'city': _villeController.text.trim(),
+      'phonenumber': _fullPhone,
+      'countryCode': _countryCode,
+    });
   }
 
   @override
@@ -110,7 +124,7 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Titre principal
+            // 🔹 Titre
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -121,82 +135,92 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
             ),
             const SizedBox(height: 24),
 
-            // 🔹 Champ Nom
+            // 🔹 Nom
             AppTextField(
               hintText: loc.nameLabel,
               controller: _nomController,
             ),
             const SizedBox(height: 16),
 
-            // 🔹 Champ Prénom
+            // 🔹 Prénom
             AppTextField(
               hintText: loc.firstnameLabel,
               controller: _prenomController,
             ),
             const SizedBox(height: 16),
 
-            // 🔹 Champ Numéro de téléphone (avec validation)
-            AppTextField(
-              hintText: loc.phoneLabel,
-              controller: _numeroController,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              errorText: _phoneError,
+            // 🔹 Téléphone (pays complètement verrouillé sur le Bénin)
+            Stack(
+              children: [
+                IntlPhoneField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    hintText: "01XXXXXXXX",
+                    hintStyle: AppTextStyles.hint.copyWith(color: colors.hint),
+                    filled: true,
+                    fillColor: colors.inputFill,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.medium),
+                      borderSide: BorderSide(
+                        color:
+                        _phoneError != null ? colors.error : colors.border,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.medium),
+                      borderSide: BorderSide(
+                        color: _phoneError != null
+                            ? colors.error
+                            : colors.primary,
+                        width: 1.3,
+                      ),
+                    ),
+                    errorText: _phoneError,
+                  ),
+                  initialCountryCode: 'BJ',
+                  disableLengthCheck: true,
+
+                  // 🔒 VERROUILLAGE COMPLET DU SÉLECTEUR
+                  showDropdownIcon: false,
+                  flagsButtonPadding:
+                  const EdgeInsets.only(left: 12, right: 8),
+
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  onChanged: (phone) => _checkFilled(),
+                  onCountryChanged: (country) {
+                    if (country.code != 'BJ') {
+                      Future.microtask(() {
+                        _phoneController.clear();
+                        setState(() {});
+                      });
+                    }
+                  },
+                ),
+
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: _phoneError != null ? 24 : 0,
+                  width: 90,
+                  child: Container(color: Colors.transparent),
+                ),
+              ],
             ),
+
             const SizedBox(height: 16),
 
-            // 🔹 Champ Ville
+            // 🔹 Ville
             AppTextField(
               hintText: loc.cityLabel,
               controller: _villeController,
             ),
-            const SizedBox(height: 16),
-
-            // 🔹 Champ Pays (Dropdown)
-            DropdownButtonFormField<String>(
-              initialValue: _pays,
-              dropdownColor: colors.surface,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: colors.inputFill,
-                contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                hintText: loc.countryLabel,
-                hintStyle: AppTextStyles.hint.copyWith(color: colors.hint),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.medium),
-                  borderSide: BorderSide(color: colors.border, width: 1),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.medium),
-                  borderSide: BorderSide(color: colors.primary, width: 1.3),
-                ),
-              ),
-              icon: Icon(Icons.keyboard_arrow_down_rounded,
-                  color: colors.textSecondary),
-              items: _paysList
-                  .map((p) => DropdownMenuItem(
-                value: p,
-                child: Text(p, style: TextStyle(color: colors.textPrimary)),
-              ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() => _pays = value);
-                _checkFilled();
-              },
-            ),
-
-            if (_errorCountry != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                _errorCountry!,
-                style: TextStyle(
-                  color: colors.error,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
 
             const SizedBox(height: 32),
 
@@ -211,13 +235,14 @@ class _RegisterDetailsPageState extends ConsumerState<RegisterDetailsPage> {
 
             const SizedBox(height: 24),
 
-            // 🔹 Lien vers la connexion
+            // 🔹 Lien connexion
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Text(
                   loc.signupHaveAccount,
-                  style: TextStyle(color: colors.textSecondary, fontSize: 15),
+                  style:
+                  TextStyle(color: colors.textSecondary, fontSize: 15),
                 ),
                 const SizedBox(width: 6),
                 GestureDetector(

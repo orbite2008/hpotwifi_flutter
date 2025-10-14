@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/utils/form_validators.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../widgets/otp_dialog.dart';
+import '../../../../app/providers/global_providers.dart';
 
 class RegisterEmailPage extends ConsumerStatefulWidget {
   const RegisterEmailPage({super.key});
@@ -43,24 +44,33 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
     final loc = AppLocalizations.of(context)!;
     FocusScope.of(context).unfocus();
 
-    // Validation centralisée
     final emailError =
     FormValidators.validateEmail(context, _emailController.text);
-
     if (emailError != null) {
       setState(() => _emailError = emailError);
       return;
     }
 
-    // Affiche le loader localisé
     await showAppLoader(context, message: loc.loading);
-    await Future.delayed(const Duration(seconds: 1));
+
+    final email = _emailController.text.trim();
+    final authController = ref.read(authControllerProvider.notifier);
+    final success = await authController.sendOtp(email);
 
     if (!mounted) return;
-    Navigator.of(context).pop(); // Ferme le loader
+    Navigator.of(context).pop();
 
-    // Affiche le dialogue OTP
-    await showOtpDialog(context, _emailController.text.trim());
+    if (success) {
+      await showOtpDialog(context, email);
+    } else {
+      final state = ref.read(authControllerProvider);
+      final errorMessage =
+          state.errorMessage ?? loc.signupInvalidEmail;
+
+      setState(() {
+        _emailError = errorMessage;
+      });
+    }
   }
 
   @override
@@ -76,7 +86,6 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Titre principal
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -86,8 +95,6 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
               ),
             ),
             const SizedBox(height: 8),
-
-            // 🔹 Sous-titre
             Text(
               loc.signupEnterEmailSubtitle,
               style: TextStyle(
@@ -97,13 +104,12 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
             ),
             const SizedBox(height: 24),
 
-            // 🔹 Champ e-mail avec validation
+            // 🔹 Champ e-mail avec validation dynamique
             AppTextField.email(
               controller: _emailController,
               errorText: _emailError,
               hint: loc.emailLabel,
             ),
-
             const SizedBox(height: 24),
 
             // 🔹 Bouton continuer
@@ -117,7 +123,6 @@ class _RegisterEmailPageState extends ConsumerState<RegisterEmailPage> {
 
             const SizedBox(height: 20),
 
-            // 🔹 Lien vers la connexion
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

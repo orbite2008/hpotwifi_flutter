@@ -45,6 +45,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get countryRequired => 'Please select a country.';
 
   @override
+  String get otpSendFailed => 'Failed to send verification code. Please try again.';
+
+  @override
+  String get otpSendSuccess => 'Verification code sent successfully.';
+
+  @override
   String get otpTitle => 'Code verification';
 
   @override

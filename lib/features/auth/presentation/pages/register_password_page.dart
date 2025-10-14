@@ -28,11 +28,47 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
   String? _confirmError;
   String? _termsError;
 
+  // ✅ Données utilisateur reçues de la page précédente
+  late final String _email;
+  late final String _firstName;
+  late final String _lastName;
+  late final String _city;
+  late final String _phoneNumber;
+  late final String _countryCode;
+
+  bool _initialized = false; // ✅ empêche une double affectation
+
   @override
   void initState() {
     super.initState();
     _passwordController.addListener(_checkFilled);
     _confirmController.addListener(_checkFilled);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return; // ✅ évite la réinitialisation
+
+    // ✅ Récupération sécurisée des données transmises par GoRouter.extra
+    final extra = GoRouterState.of(context).extra;
+    if (extra is Map<String, dynamic>) {
+      _email = extra['email'] ?? '';
+      _firstName = extra['firstName'] ?? '';
+      _lastName = extra['lastName'] ?? '';
+      _city = extra['city'] ?? '';
+      _phoneNumber = extra['phonenumber'] ?? '';
+      _countryCode = extra['countryCode'] ?? '229';
+    } else {
+      _email = '';
+      _firstName = '';
+      _lastName = '';
+      _city = '';
+      _phoneNumber = '';
+      _countryCode = '229';
+    }
+
+    _initialized = true; // ✅ verrouille l'initialisation
   }
 
   @override
@@ -53,7 +89,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
     });
   }
 
-  /// Validation centralisée et navigation
+  /// ✅ Validation centralisée et navigation
   Future<void> _onContinue() async {
     final loc = AppLocalizations.of(context)!;
     FocusScope.of(context).unfocus();
@@ -81,13 +117,21 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
       return;
     }
 
+    // ✅ Simulation d’appel API / création du compte
     await showAppLoader(context, message: loc.loading);
     await Future.delayed(const Duration(seconds: 2));
-
     if (!mounted) return;
     Navigator.of(context).pop();
 
-    if (mounted) context.goNamed('login');
+    // ✅ Navigation finale vers la page de connexion
+    context.goNamed('login');
+
+    // ✅ Log console de debug
+    debugPrint('--- User Registration Complete ---');
+    debugPrint('Email: $_email');
+    debugPrint('Name: $_firstName $_lastName');
+    debugPrint('City: $_city');
+    debugPrint('Phone: $_phoneNumber ($_countryCode)');
   }
 
   @override
@@ -103,7 +147,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titre principal
+            // 🔹 Titre principal
             Text(
               loc.signupCreateAccountTitle,
               style: TextStyle(
@@ -114,7 +158,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
             ),
             const SizedBox(height: 24),
 
-            // Champ mot de passe
+            // 🔹 Champ mot de passe
             AppTextField.password(
               hint: loc.passwordLabel,
               controller: _passwordController,
@@ -123,7 +167,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
             ),
             const SizedBox(height: 16),
 
-            // Champ confirmation mot de passe
+            // 🔹 Champ confirmation mot de passe
             AppTextField.password(
               hint: loc.passwordConfirmLabel,
               controller: _confirmController,
@@ -132,7 +176,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
             ),
             const SizedBox(height: 20),
 
-            // Checkbox Termes et conditions
+            // 🔹 Checkbox Termes et conditions
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -191,7 +235,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
 
             const SizedBox(height: 24),
 
-            // Bouton Créer un compte
+            // 🔹 Bouton Créer un compte
             AppButton(
               label: loc.createAccountBtn,
               enabled: _filled,
@@ -202,7 +246,7 @@ class _RegisterPasswordPageState extends ConsumerState<RegisterPasswordPage> {
 
             const SizedBox(height: 20),
 
-            // Lien "Déjà un compte ? Connectez-vous"
+            // 🔹 Lien "Déjà un compte ? Connectez-vous"
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

@@ -36,4 +36,20 @@ class PreferencesService {
     final code = prefs.getString(_localeKey) ?? 'fr';
     return Locale(code);
   }
+
+  Future<void> setString(String key, String value) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setString(key, value);
+  }
+
+  Future<String?> getString(String key) async {
+    final p = await SharedPreferences.getInstance();
+    return p.getString(key);
+  }
+
+  Future<void> remove(String key) async {
+    final p = await SharedPreferences.getInstance();
+    await p.remove(key);
+  }
+
 }

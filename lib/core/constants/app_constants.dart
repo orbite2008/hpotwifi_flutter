@@ -18,18 +18,24 @@ class AppConstants {
   static const double defaultRadius = 12.0;
 }
 
-/// Chemins d'API centralisés
-class ApiPaths {
-  static const String register       = "/user/register";
-}
-
-/// Config réseau commune
 class ApiConfig {
-
+  /// Construit une Uri à partir du baseUrl + path
   static Uri uri(String path, [Map<String, String>? query]) {
-    final base = "${AppConstants.apiBaseUrl}$path";
-    final parsed = Uri.parse(base);
-    return query == null ? parsed : parsed.replace(queryParameters: query);
+    final base = Uri.parse(AppConstants.apiBaseUrl);
+
+    // Normalise le path pour éviter les doubles slash lors du join
+    final normalizedPath = path.startsWith('/') ? path.substring(1) : path;
+
+    return Uri(
+      scheme: base.scheme,
+      host: base.host,
+      port: base.hasPort ? base.port : null,
+      path: [
+        if (base.path.isNotEmpty) base.path.replaceFirst(RegExp(r'^/'), ''),
+        normalizedPath,
+      ].where((p) => p.isNotEmpty).join('/'),
+      queryParameters: (query == null || query.isEmpty) ? null : query,
+    );
   }
 }
 

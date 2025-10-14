@@ -167,6 +167,18 @@ abstract class AppLocalizations {
   /// **'Please select a country.'**
   String get countryRequired;
 
+  /// No description provided for @otpSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send verification code. Please try again.'**
+  String get otpSendFailed;
+
+  /// No description provided for @otpSendSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent successfully.'**
+  String get otpSendSuccess;
+
   /// No description provided for @otpTitle.
   ///
   /// In en, this message translates to:

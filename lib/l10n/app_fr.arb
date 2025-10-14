@@ -13,6 +13,8 @@
   "loginLink": "Connectez-vous",
   "signupInvalidEmail": "Adresse e-mail invalide. Veuillez réessayer.",
   "countryRequired": "Veuillez sélectionner un pays.",
+  "otpSendFailed": "Impossible d'envoyer le code de vérification. Veuillez réessayer.",
+  "otpSendSuccess": "Code de vérification envoyé avec succès.",
 
   "otpTitle": "Vérification du code",
   "otpSubtitle": "Nous venons d'envoyer un code de vérification à l'adresse",

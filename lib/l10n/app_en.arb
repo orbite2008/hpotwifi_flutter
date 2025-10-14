@@ -13,6 +13,8 @@
   "loginLink": "Log in",
   "signupInvalidEmail": "Invalid email address. Please try again.",
   "countryRequired": "Please select a country.",
+  "otpSendFailed": "Failed to send verification code. Please try again.",
+  "otpSendSuccess": "Verification code sent successfully.",
 
   "otpTitle": "Code verification",
   "otpSubtitle": "We just sent a verification code to",
