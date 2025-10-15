@@ -1,7 +1,10 @@
+// lib/features/auth/presentation/pages/login_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../app/providers/global_providers.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
@@ -61,7 +64,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       _passwordError = null;
     });
 
-    // ✅ Validation via FormValidators centralisés
     final emailError = FormValidators.validateEmail(context, email);
     if (emailError != null) {
       setState(() => _emailError = emailError);
@@ -74,18 +76,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       return;
     }
 
-    // ✅ Affichage du loader
+    final authController = ref.read(authControllerProvider.notifier);
     await showAppLoader(context, message: loc.loading);
-    await Future.delayed(const Duration(seconds: 1));
+
+    final success = await authController.login(email, password);
 
     if (!mounted) return;
-    Navigator.of(context).pop(); // ferme le loader
+    Navigator.of(context).pop(); // Ferme le loader
 
-    // ✅ Simulation d'une connexion réussie
-    if (email.isNotEmpty && password.isNotEmpty) {
+    if (success) {
       context.goNamed('home');
     } else {
-      setState(() => _passwordError = loc.invalidCredentials);
+      final state = ref.read(authControllerProvider);
+      setState(() => _passwordError = state.errorMessage ?? loc.invalidCredentials);
     }
   }
 
@@ -102,7 +105,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Titre principal
             Text(
               loc.loginTitle,
               style: TextStyle(
@@ -112,31 +114,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
             ),
             const SizedBox(height: 8),
-
-            // 🔹 Sous-titre
             Text(
               loc.loginSubtitle,
               style: TextStyle(fontSize: 15, color: colors.textSecondary),
             ),
             const SizedBox(height: 32),
-
-            // 🔹 Champ email
             AppTextField.email(
               controller: _emailController,
               errorText: _emailError,
               hint: loc.emailLabel,
             ),
             const SizedBox(height: 16),
-
-            // 🔹 Champ mot de passe
             AppTextField.password(
               controller: _passwordController,
               errorText: _passwordError,
               hint: loc.passwordLabel,
             ),
             const SizedBox(height: 8),
-
-            // 🔹 Lien mot de passe oublié
             Align(
               alignment: Alignment.centerLeft,
               child: GestureDetector(
@@ -151,10 +145,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
-
-            // 🔹 Bouton connexion
             AppButton(
               label: loc.loginBtn,
               enabled: _filled,
@@ -162,10 +153,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               backgroundColor:
               _filled ? colors.buttonActive : colors.buttonInactive,
             ),
-
             const SizedBox(height: 24),
-
-            // 🔹 Lien vers inscription
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

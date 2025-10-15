@@ -5,5 +5,5 @@ class ApiPaths {
 
   // Inscription & connexion
   static const String register  = "/user/register";
-  static const String login     = "/user/login";
+  static const String login = '/auth/login';
 }

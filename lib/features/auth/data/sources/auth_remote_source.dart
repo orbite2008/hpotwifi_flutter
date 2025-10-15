@@ -11,19 +11,17 @@ class AuthRemoteSource {
 
   AuthRemoteSource(this._client);
 
-  /// Envoie un code OTP à l’adresse e-mail fournie.
   Future<bool> sendOtp(String email) async {
     final res = await _client.postJson(ApiPaths.sendOtp, {"email": email});
     final body = _checkResponse(res, expected: {200});
 
     if (body['success'] != true) {
-      final message = body['message']?.toString() ?? 'Échec de l’envoi du code OTP';
+      final message = body['message']?.toString() ?? 'Échec de l\'envoi du code OTP';
       throw ApiException(message, statusCode: res.statusCode);
     }
     return true;
   }
 
-  /// Vérifie un code OTP pour un e-mail donné.
   Future<bool> verifyOtp(String email, String otp) async {
     final res = await _client.postJson(ApiPaths.verifyOtp, {
       "email": email,
@@ -52,7 +50,7 @@ class AuthRemoteSource {
     );
   }
 
-  /// Authentifie un utilisateur et renvoie son token et ses infos.
+  /// Authentifie un utilisateur et renvoie token + infos user
   Future<Map<String, dynamic>> login(String email, String password) async {
     final res = await _client.postJson(ApiPaths.login, {
       "email": email,
@@ -60,23 +58,21 @@ class AuthRemoteSource {
     });
     final body = _checkResponse(res, expected: {200});
 
-    // Tolérance selon le format du backend
-    Map<String, dynamic> data = body;
-    if (body['data'] is Map<String, dynamic>) {
-      data = body['data'] as Map<String, dynamic>;
-    }
-
-    final token = (data['token'] ?? data['accessToken'])?.toString();
-    final user = data['user'];
+    // L'API retourne directement : {access_token, user, ...}
+    // Pas de niveau "data" intermédiaire
+    final token = (body['access_token'] ?? body['token'])?.toString();
+    final user = body['user'];
 
     if (token == null || user is! Map<String, dynamic>) {
-      throw ApiException('Réponse invalide de /user/login', statusCode: res.statusCode);
+      throw ApiException(
+        'Réponse invalide de /auth/login: token ou user manquant',
+        statusCode: res.statusCode,
+      );
     }
 
     return {'token': token, 'user': user};
   }
 
-  /// Vérifie et décode proprement la réponse HTTP.
   Map<String, dynamic> _checkResponse(http.Response res, {required Set<int> expected}) {
     final status = res.statusCode;
     Map<String, dynamic>? json;
@@ -87,20 +83,16 @@ class AuthRemoteSource {
       throw ApiException('Réponse JSON invalide', statusCode: status);
     }
 
-    // Réponses attendues (succès)
     if (expected.contains(status)) return json!;
 
-    // Erreurs côté client (400-499)
     if (status >= 400 && status < 500) {
       throw ApiException.fromResponse(json, status);
     }
 
-    // Erreurs serveur (500+)
     if (status >= 500) {
       throw ApiException('Erreur serveur interne', statusCode: status);
     }
 
-    // Cas inattendu
     throw ApiException('Erreur inconnue', statusCode: status);
   }
 }
