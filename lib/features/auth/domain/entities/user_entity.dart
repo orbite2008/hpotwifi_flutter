@@ -1,13 +1,17 @@
+// lib/features/auth/domain/entities/user_entity.dart
+
 class UserEntity {
-  final int id;
+  final String id;
   final String email;
   final String fullName;
-  final String city;
+  final String? phone;
+  final String? city;
 
-  UserEntity({
+  const UserEntity({
     required this.id,
     required this.email,
     required this.fullName,
-    required this.city,
+    this.phone,
+    this.city,
   });
 }

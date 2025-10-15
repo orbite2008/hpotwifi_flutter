@@ -1,3 +1,5 @@
+// lib/features/auth/data/models/user_model.dart
+
 import 'dart:convert';
 import '../../domain/entities/user_entity.dart';
 
@@ -8,10 +10,12 @@ class UserModel {
   final String lastName;
   final String phonenumber;
   final String city;
+  final String countryCode;
   final bool phonenumberVerified;
   final String? createdate;
   final String? updatedate;
-  final int? countryId;
+  final String? lastLoginDate;
+  final bool passwordToBeChange;
 
   UserModel({
     required this.id,
@@ -20,10 +24,12 @@ class UserModel {
     required this.lastName,
     required this.phonenumber,
     required this.city,
+    required this.countryCode,
     required this.phonenumberVerified,
     this.createdate,
     this.updatedate,
-    this.countryId,
+    this.lastLoginDate,
+    this.passwordToBeChange = false,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -33,10 +39,12 @@ class UserModel {
     lastName: json['lastName'] ?? '',
     phonenumber: json['phonenumber'] ?? '',
     city: json['city'] ?? '',
+    countryCode: json['countrycode']?.toString() ?? '',
     phonenumberVerified: json['phonenumberverified'] ?? false,
     createdate: json['createdate'],
     updatedate: json['updatedate'],
-    countryId: json['countryid'],
+    lastLoginDate: json['lastlogindate'],
+    passwordToBeChange: json['passwordtobechange'] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -46,20 +54,24 @@ class UserModel {
     'lastName': lastName,
     'phonenumber': phonenumber,
     'city': city,
+    'countrycode': countryCode,
     'phonenumberverified': phonenumberVerified,
     'createdate': createdate,
     'updatedate': updatedate,
-    'countryid': countryId,
+    'lastlogindate': lastLoginDate,
+    'passwordtobechange': passwordToBeChange,
   };
 
   String toJsonString() => jsonEncode(toJson());
+
   factory UserModel.fromJsonString(String str) =>
       UserModel.fromJson(jsonDecode(str) as Map<String, dynamic>);
 
   UserEntity toEntity() => UserEntity(
-    id: id,
+    id: id.toString(), // int → String OK maintenant
     email: email,
     fullName: '$firstName $lastName',
+    phone: phonenumber,
     city: city,
   );
 }

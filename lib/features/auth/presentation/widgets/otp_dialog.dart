@@ -15,6 +15,7 @@ import '../../../../app/providers/global_providers.dart';
 Future<void> showOtpDialog(BuildContext context, String email) async {
   final controller = TextEditingController();
 
+  const otpLength = 6;
   bool filled = false;
   bool canResend = false;
   bool verifying = false;
@@ -71,7 +72,7 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
           Navigator.of(dialogContext).pop();
         }
 
-        // On attend la fin du rebuild du TextField avant de libérer
+        // Petite attente avant de disposer le controller
         await Future.delayed(const Duration(milliseconds: 200));
         controller.dispose();
       }
@@ -108,6 +109,14 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
             FocusScope.of(dialogContext).unfocus();
             final code = controller.text.trim();
 
+            if (code.length != otpLength) {
+              _setState?.call(() {
+                errorText = loc.otpInvalid;
+              });
+              verifying = false;
+              return;
+            }
+
             await showAppLoader(dialogContext, message: loc.loading);
             final success = await authController.verifyOtp(email, code);
             if (dialogContext.mounted) Navigator.of(dialogContext).pop();
@@ -140,14 +149,8 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
               _setState ??= setState;
 
               void updateFilled(String value) {
-                if (value.length > 5) {
-                  controller.text = value.substring(0, 5);
-                  controller.selection = TextSelection.fromPosition(
-                    TextPosition(offset: controller.text.length),
-                  );
-                }
                 setState(() {
-                  filled = controller.text.trim().length == 5;
+                  filled = value.trim().length == otpLength;
                   errorText = null;
                 });
               }
@@ -203,7 +206,8 @@ Future<void> showOtpDialog(BuildContext context, String email) async {
                           keyboardType: TextInputType.number,
                           errorText: errorText,
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(otpLength),
                           ],
                           onChanged: updateFilled,
                         ),

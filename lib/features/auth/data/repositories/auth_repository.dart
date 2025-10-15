@@ -1,3 +1,5 @@
+// lib/features/auth/data/repositories/auth_repository.dart
+
 import '../sources/auth_remote_source.dart';
 import '../sources/auth_local_source.dart';
 import '../../domain/entities/user_entity.dart';
@@ -12,11 +14,12 @@ class AuthRepository {
     required this.local,
   });
 
-  // OTP
-  Future<void> sendOtp(String email) => remote.sendOtp(email);
-  Future<void> verifyOtp(String email, String otp) => remote.verifyOtp(email, otp);
+  Future<bool> sendOtp(String email) => remote.sendOtp(email);
 
-  // Register
+  Future<bool> verifyOtp(String email, String otp) =>
+      remote.verifyOtp(email, otp);
+
+  /// Inscription
   Future<UserEntity> register({
     required String firstName,
     required String lastName,
@@ -37,27 +40,26 @@ class AuthRepository {
     });
 
     final model = UserModel.fromJson(userJson);
-    await local.saveUser(model);
     return model.toEntity();
   }
 
-  // Login
+  /// Connexion : sauvegarde token + user
   Future<UserEntity> login({
     required String email,
     required String password,
   }) async {
     final result = await remote.login(email, password);
     final token = result['token'] as String;
-    final user  = result['user']  as Map<String, dynamic>;
+    final user = result['user'] as Map<String, dynamic>;
+
+    await local.saveToken(token);
 
     final model = UserModel.fromJson(user);
-    await local.saveToken(token);
     await local.saveUser(model);
 
     return model.toEntity();
   }
 
-  // Local helpers
   Future<UserEntity?> currentUser() async {
     final m = await local.readUser();
     return m?.toEntity();
