@@ -19,7 +19,6 @@ class AuthRepository {
   Future<bool> verifyOtp(String email, String otp) =>
       remote.verifyOtp(email, otp);
 
-  /// Inscription
   Future<UserEntity> register({
     required String firstName,
     required String lastName,
@@ -43,7 +42,6 @@ class AuthRepository {
     return model.toEntity();
   }
 
-  /// Connexion : sauvegarde token + user
   Future<UserEntity> login({
     required String email,
     required String password,
@@ -58,6 +56,13 @@ class AuthRepository {
     await local.saveUser(model);
 
     return model.toEntity();
+  }
+
+  /// Vérifie si l'utilisateur a un token valide sauvegardé
+  Future<bool> isAuthenticated() async {
+    final token = await local.readToken();
+    final user = await local.readUser();
+    return token != null && token.isNotEmpty && user != null;
   }
 
   Future<UserEntity?> currentUser() async {

@@ -1,4 +1,5 @@
 // lib/core/services/preferences_service.dart
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 class PreferencesService {
   static const _themeKey = 'theme_mode';
   static const _localeKey = 'locale_code';
+  static const _firstLaunchKey = 'first_launch';
 
   /// Sauvegarde le mode de thème choisi
   static Future<void> saveThemeMode(ThemeMode mode) async {
@@ -37,6 +39,19 @@ class PreferencesService {
     return Locale(code);
   }
 
+  /// Vérifie si c'est le premier lancement de l'application
+  static Future<bool> isFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_firstLaunchKey) ?? true;
+  }
+
+  /// Marque l'application comme déjà lancée
+  static Future<void> setNotFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_firstLaunchKey, false);
+  }
+
+  /// Méthodes génériques pour gérer toute clé/valeur
   Future<void> setString(String key, String value) async {
     final p = await SharedPreferences.getInstance();
     await p.setString(key, value);
@@ -52,4 +67,9 @@ class PreferencesService {
     await p.remove(key);
   }
 
+  /// Efface toutes les préférences (utile pour déconnexion complète)
+  static Future<void> clear() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }

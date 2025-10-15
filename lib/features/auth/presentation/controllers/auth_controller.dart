@@ -44,7 +44,6 @@ class AuthController extends Notifier<AuthState> {
     return _guard(() => _repo.verifyOtp(email, otp));
   }
 
-  /// Inscription : ne sauvegarde PAS localement (pas de token dans la réponse API)
   Future<bool> register({
     required String firstName,
     required String lastName,
@@ -65,17 +64,20 @@ class AuthController extends Notifier<AuthState> {
     ));
   }
 
-  /// Connexion : sauvegarde token + user localement
   Future<bool> login(String email, String password) async {
     return _guard(() => _repo.login(email: email, password: password));
   }
 
-  Future<void> logout() async {
-    await _repo.logout();
-    state = AuthState.initial; // Réinitialise l'état après déconnexion
+  /// Vérifie l'authentification au démarrage
+  Future<bool> checkAuthStatus() async {
+    return await _repo.isAuthenticated();
   }
 
-  /// Gestion d'état centralisée avec gestion d'erreur
+  Future<void> logout() async {
+    await _repo.logout();
+    state = AuthState.initial;
+  }
+
   Future<bool> _guard(Future<dynamic> Function() fn) async {
     state = state.copyWith(loading: true, errorMessage: null);
     try {
