@@ -281,13 +281,20 @@ class _EditHotspotPageState extends ConsumerState<EditHotspotPage> {
 
     state.whenOrNull(
       data: (_) {
+        // ✅ 1. Vide le cache local
+        ref.read(localSourceProvider).clearCache();
+
+        // ✅ 2. Invalide la page de détail
         ref.invalidate(hotspotDetailControllerProvider(widget.hotspotId));
+
+        // ✅ 3. Force le rechargement de la HomePage (sans utiliser le retour)
         ref.invalidate(homeControllerProvider);
 
         context.pop();
       },
     );
   }
+
 }
 
 // ═══════════════════════════════════════════════════════════

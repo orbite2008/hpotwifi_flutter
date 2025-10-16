@@ -24,45 +24,52 @@ class HotspotInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final loc = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: colors.primary.withOpacity(0.08),
+        color: colors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow(loc.zone, zone, colors),
-          const SizedBox(height: 12),
-          _buildInfoRow(loc.wifiName, wifiName, colors),
-          const SizedBox(height: 12),
-          _buildInfoRow(loc.district, district, colors),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: _buildInfoRow(loc.city, city, colors),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInfoRow(loc.zone, zone, colors),
+                const SizedBox(height: 4),
+                _buildInfoRow(loc.wifiName, wifiName, colors),
+                const SizedBox(height: 4),
+                _buildInfoRow(loc.district, district, colors),
+                const SizedBox(height: 4),
+                _buildInfoRow(loc.city, city, colors),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          InkWell(
+            onTap: onEdit,
+            borderRadius: BorderRadius.circular(6),
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color:
+                    isDark
+                        ? colors.primary.withValues(alpha: 0.3)
+                        : colors.primary,
+                borderRadius: BorderRadius.circular(6),
               ),
-              // Bouton Edit
-              InkWell(
-                onTap: onEdit,
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: colors.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
+              child: Icon(
+                Icons.edit,
+                color: isDark ? colors.primary : Colors.white,
+                size: 18,
               ),
-            ],
+            ),
           ),
         ],
       ),
@@ -70,23 +77,21 @@ class HotspotInfoCard extends StatelessWidget {
   }
 
   Widget _buildInfoRow(String label, String value, AppColors colors) {
-    return Row(
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
-          label,
+          '$label ',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: colors.textPrimary,
           ),
         ),
-        const SizedBox(width: 8),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 14,
-            color: colors.textSecondary,
-          ),
+          style: TextStyle(fontSize: 14, color: colors.textSecondary),
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

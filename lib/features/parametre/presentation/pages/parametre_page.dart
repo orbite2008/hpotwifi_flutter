@@ -70,7 +70,7 @@ class ParametrePage extends ConsumerWidget {
                       child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child: Text(loc.darkMode, style: TextStyle(color: colors.textPrimary, fontSize: 15))),
                     ),
                     Switch(
-                      activeColor: colors.primary,
+                      activeThumbColor: colors.primary,
                       value: themeMode == ThemeMode.dark,
                       onChanged: (_) => ref.read(themeModeProvider.notifier).toggle(),
                     ),
@@ -94,9 +94,6 @@ class ParametrePage extends ConsumerWidget {
                           DropdownMenuItem(value: const Locale('en'), child: Text(loc.english, style: TextStyle(color: colors.textPrimary))),
                         ],
                         onChanged: (lang) {
-                          if (lang != null && lang != locale) {
-                            ref.read(localeProvider.notifier).setLocale(lang);
-                          }
                         },
                       ),
                     ),

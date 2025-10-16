@@ -18,25 +18,37 @@ class CustomTabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 6,
+        ),
         decoration: BoxDecoration(
-          color: isSelected ? colors.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
+          color: isSelected
+              ? (isDark
+              ? colors.primary.withValues(alpha: 0.25)
+              : colors.primary.withValues(alpha: 0.15))
+              : colors.surface,
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected ? colors.primary : colors.border,
-            width: 1,
+            color: isSelected
+                ? colors.primary
+                : colors.border,
+            width: isSelected ? 1 : 1,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : colors.textPrimary,
+            fontSize: 13,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            color: isSelected
+                ? colors.primary
+                : colors.textPrimary,
           ),
         ),
       ),

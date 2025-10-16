@@ -15,23 +15,6 @@ class FilterResult {
   });
 }
 
-/// Widget réutilisable pour afficher un dialog de filtrage (Connecté/Déconnecté)
-///
-/// Usage:
-/// ```
-/// final result = await showFilterDialog(
-///   context: context,
-///   initialShowConnected: _showConnected,
-///   initialShowDisconnected: _showDisconnected,
-/// );
-///
-/// if (result != null) {
-///   setState(() {
-///     _showConnected = result.showConnected;
-///     _showDisconnected = result.showDisconnected;
-///   });
-/// }
-/// ```
 Future<FilterResult?> showFilterDialog({
   required BuildContext context,
   required bool initialShowConnected,

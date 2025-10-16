@@ -6,18 +6,16 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/hotspot_info_card.dart';
 import '../../../../core/widgets/horizontal_tab_bar.dart';
-import '../../../../core/widgets/search_filter_bar.dart';
-import '../../../../core/widgets/user_list_item.dart';
-import '../../../../core/widgets/custom_fab.dart';
+import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
-import '../../../../core/widgets/empty_state_view.dart';
 import '../../../../core/widgets/filter_dialog.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../controllers/hotspot_detail_controller.dart';
+import '../widgets/graph_content_view.dart';
+import '../widgets/users_list_content_view.dart';
+import '../widgets/history_content_view.dart';
+import '../widgets/tickets_content_view.dart';
 
-/// Page de détails d'un hotspot
-///
-/// Reçoit l'ID du hotspot et charge les données depuis l'API
 class HotspotDetailPage extends ConsumerStatefulWidget {
   final int hotspotId;
 
@@ -31,11 +29,12 @@ class HotspotDetailPage extends ConsumerStatefulWidget {
 }
 
 class _HotspotDetailPageState extends ConsumerState<HotspotDetailPage> {
-  int _selectedTabIndex = 1;
+  int _selectedPageIndex = 1; // 0=Graph, 1=Users, 2=History, 3=Tickets
+
   final _searchController = TextEditingController();
   String _searchQuery = '';
 
-  // Filtres
+  // Filtres (seulement pour liste utilisateurs)
   bool _showConnected = true;
   bool _showDisconnected = true;
 
@@ -104,8 +103,9 @@ class _HotspotDetailPageState extends ConsumerState<HotspotDetailPage> {
   Widget _buildContent(dynamic hotspot, AppColors colors, AppLocalizations loc) {
     return Column(
       children: [
+        // InfoCard
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: HotspotInfoCard(
             zone: hotspot.hotspotzonename,
             wifiName: hotspot.hotspotwifiname,
@@ -113,118 +113,120 @@ class _HotspotDetailPageState extends ConsumerState<HotspotDetailPage> {
             city: hotspot.city,
             onEdit: () => context.pushNamed(
               'editHotspot',
-              pathParameters: {'id': widget.hotspotId.toString()}, // ✅ CORRECTION
+              pathParameters: {'id': widget.hotspotId.toString()},
             ),
           ),
         ),
 
-        // Tabs primaires
-        HorizontalTabBar(
-          tabs: [
-            TabItem(
-              label: loc.graph,
-              isSelected: _selectedTabIndex == 0,
-              onTap: () => setState(() => _selectedTabIndex = 0),
-            ),
-            TabItem(
-              label: loc.userList,
-              isSelected: _selectedTabIndex == 1,
-              onTap: () => setState(() => _selectedTabIndex = 1),
-            ),
-          ],
-        ),
+        // ✅ Tabs sur 2 lignes
+        _buildTabsSection(loc),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
-        // Tabs secondaires
-        HorizontalTabBar(
-          tabs: [
-            TabItem(
-              label: loc.activationHistory,
-              isSelected: false,
-              onTap: () {},
+        if (_selectedPageIndex != 0) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: AppTextField(
+                    controller: _searchController,
+                    hintText: _getSearchHint(loc),
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                ),
+                if (_selectedPageIndex == 1) ...[
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: Icon(Icons.filter_list, color: colors.primary),
+                    onPressed: _showFilterDialog,
+                  ),
+                ],
+              ],
             ),
-            TabItem(
-              label: loc.ticketManagement,
-              isSelected: false,
-              onTap: () {},
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 16),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SearchFilterBar(
-            controller: _searchController,
-            hintText: 'Rechercher',
-            onFilterTap: _showFilterDialog,
           ),
-        ),
-
-        const SizedBox(height: 16),
+          const SizedBox(height: 12),
+        ],
 
         Expanded(
-          child: _selectedTabIndex == 0
-              ? _buildGraphView(loc)
-              : _buildUserListView(colors, loc),
+          child: _buildPageContent(),
         ),
       ],
     );
   }
 
-  Widget _buildGraphView(AppLocalizations loc) {
-    return EmptyStateView(
-      icon: Icons.bar_chart,
-      message: loc.graphComingSoon,
+  /// ✅ Tabs sur 2 lignes (2 par ligne)
+  Widget _buildTabsSection(AppLocalizations loc) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          // ✅ Ligne 1: Graphique + Liste utilisateurs
+          HorizontalTabBar(
+            padding: EdgeInsets.zero,
+            spacing: 6,
+            tabs: [
+              TabItem(
+                label: loc.graph,
+                isSelected: _selectedPageIndex == 0,
+                onTap: () => setState(() => _selectedPageIndex = 0),
+              ),
+              TabItem(
+                label: loc.userList,
+                isSelected: _selectedPageIndex == 1,
+                onTap: () => setState(() => _selectedPageIndex = 1),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          // ✅ Ligne 2: Historique + Tickets
+          HorizontalTabBar(
+            padding: EdgeInsets.zero,
+            spacing: 6,
+            tabs: [
+              TabItem(
+                label: loc.activationHistory,
+                isSelected: _selectedPageIndex == 2,
+                onTap: () => setState(() => _selectedPageIndex = 2),
+              ),
+              TabItem(
+                label: loc.ticketManagement,
+                isSelected: _selectedPageIndex == 3,
+                onTap: () => setState(() => _selectedPageIndex = 3),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildUserListView(AppColors colors, AppLocalizations loc) {
-    final allUsers = [
-      {'id': '12345678', 'isConnected': true, 'package': 500},
-      {'id': '87654321', 'isConnected': true, 'package': 500},
-      {'id': '11223344', 'isConnected': false, 'package': 500},
-      {'id': '55667788', 'isConnected': true, 'package': 500},
-      {'id': '99887766', 'isConnected': false, 'package': 500},
-    ];
-
-    final filteredUsers = _filterUsers(allUsers);
-
-    if (filteredUsers.isEmpty) {
-      return EmptyStateView(
-        icon: Icons.person_off,
-        message: loc.noUsersFound,
-      );
+  String _getSearchHint(AppLocalizations loc) {
+    switch (_selectedPageIndex) {
+      case 1: return 'Rechercher un utilisateur';
+      case 2: return 'Rechercher dans l\'historique';
+      case 3: return 'Rechercher un ticket';
+      default: return 'Rechercher';
     }
-
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: filteredUsers.length,
-      itemBuilder: (context, index) {
-        final user = filteredUsers[index];
-        final isConnected = user['isConnected'] as bool;
-
-        return UserListItem(
-          userId: user['id'].toString(),
-          status: isConnected ? loc.connected : loc.disconnected,
-          packageInfo: 'Forfait de ${user['package']}f',
-          isConnected: isConnected,
-        );
-      },
-    );
   }
 
-  List<Map<String, dynamic>> _filterUsers(List<Map<String, dynamic>> users) {
-    return users.where((user) {
-      final matchesSearch = _searchQuery.isEmpty ||
-          user['id'].toString().toLowerCase().contains(_searchQuery);
-      final isConnected = user['isConnected'] as bool;
-      final matchesFilter = (isConnected && _showConnected) ||
-          (!isConnected && _showDisconnected);
-      return matchesSearch && matchesFilter;
-    }).toList();
+  Widget _buildPageContent() {
+    switch (_selectedPageIndex) {
+      case 0:
+        return const GraphContentView();
+      case 1:
+        return UsersListContentView(
+          searchQuery: _searchQuery,
+          showConnected: _showConnected,
+          showDisconnected: _showDisconnected,
+        );
+      case 2:
+        return HistoryContentView(searchQuery: _searchQuery);
+      case 3:
+        return TicketsContentView(searchQuery: _searchQuery);
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   Future<void> _showFilterDialog() async {

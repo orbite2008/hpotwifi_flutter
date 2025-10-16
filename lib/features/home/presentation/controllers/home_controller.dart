@@ -11,27 +11,26 @@ import '../../data/sources/hotspot_remote_source.dart';
 import '../../data/repositories/hotspot_repository.dart';
 
 // Provider pour la source remote avec injection ApiClient
-final _remoteSourceProvider = Provider((ref) {
+final remoteSourceProvider = Provider((ref) {
   final apiClient = ref.read(httpClientProvider);
   return HotspotRemoteSource(apiClient);
 });
 
-final _localSourceProvider = Provider((ref) => HotspotLocalSource());
+final localSourceProvider = Provider((ref) => HotspotLocalSource());
 
-final _repositoryProvider = Provider(
+final repositoryProvider = Provider(
       (ref) => HotspotRepository(
-    ref.read(_remoteSourceProvider),
-    ref.read(_localSourceProvider),
+    ref.read(remoteSourceProvider),
+    ref.read(localSourceProvider),
   ),
 );
 
-final _getHotspotsProvider = Provider(
-      (ref) => GetUserHotspotsUseCase(ref.read(_repositoryProvider)),
+final getHotspotsProvider = Provider(
+      (ref) => GetUserHotspotsUseCase(ref.read(repositoryProvider)),
 );
 
-// ✅ NOUVEAU Provider pour créer un hotspot
-final _createHotspotProvider = Provider(
-      (ref) => CreateHotspotUseCase(ref.read(_repositoryProvider)),
+final createHotspotProvider = Provider(
+      (ref) => CreateHotspotUseCase(ref.read(repositoryProvider)),
 );
 
 final homeControllerProvider =
@@ -42,7 +41,7 @@ AsyncNotifierProvider<HomeController, List<HotspotEntity>>(
 class HomeController extends AsyncNotifier<List<HotspotEntity>> {
   @override
   Future<List<HotspotEntity>> build() async {
-    final usecase = ref.read(_getHotspotsProvider);
+    final usecase = ref.read(getHotspotsProvider);
     return usecase();
   }
 
@@ -60,7 +59,7 @@ class HomeController extends AsyncNotifier<List<HotspotEntity>> {
     required String city,
     required String neighborhood,
   }) async {
-    final usecase = ref.read(_createHotspotProvider);
+    final usecase = ref.read(createHotspotProvider);
 
     // Appel API
     final newHotspot = await usecase(
@@ -80,7 +79,7 @@ class HomeController extends AsyncNotifier<List<HotspotEntity>> {
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final repository = ref.read(_repositoryProvider);
+      final repository = ref.read(repositoryProvider);
       return repository.refreshHotspots();
     });
   }
