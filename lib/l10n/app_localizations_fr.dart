@@ -199,6 +199,21 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get noHotspotsTitle => 'Aucun hotspot';
+
+  @override
+  String get noHotspotsMessage => 'Vous n\'avez pas encore de hotspot. Commencez par en créer un !';
+
+  @override
+  String get addFirstHotspot => 'Ajouter mon premier hotspot';
+
+  @override
+  String get vendor => 'Vendeur';
+
+  @override
+  String get pullToRefresh => 'Tirer pour rafraîchir';
+
+  @override
   String get dailySale => 'Vente du jour';
 
   @override

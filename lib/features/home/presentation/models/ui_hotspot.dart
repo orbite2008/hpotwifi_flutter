@@ -1,3 +1,5 @@
+// lib/features/home/presentation/models/ui_hotspot.dart
+
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../domain/entities/hotspot_entity.dart';
@@ -13,6 +15,8 @@ extension HotspotUiX on HotspotEntity {
         return c.ownerBadge;
       case HotspotRole.assistant:
         return c.assistantBadge;
+      case HotspotRole.vendor:
+        return c.vendorBadge;
     }
   }
 }

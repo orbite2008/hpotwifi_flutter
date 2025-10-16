@@ -1,3 +1,5 @@
+// lib/app/providers/global_providers.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/preferences_service.dart';
@@ -9,7 +11,7 @@ import '../../features/auth/data/sources/auth_remote_source.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
 
-
+// ========== THEME MODE ==========
 class ThemeModeNotifier extends AsyncNotifier<ThemeMode> {
   @override
   Future<ThemeMode> build() async {
@@ -32,6 +34,7 @@ class ThemeModeNotifier extends AsyncNotifier<ThemeMode> {
 final themeModeProvider =
 AsyncNotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
 
+// ========== LOCALE ==========
 class LocaleNotifier extends AsyncNotifier<Locale> {
   @override
   Future<Locale> build() async {
@@ -51,12 +54,18 @@ class LocaleNotifier extends AsyncNotifier<Locale> {
 final localeProvider =
 AsyncNotifierProvider<LocaleNotifier, Locale>(LocaleNotifier.new);
 
-/// Clients & Services de base
-final httpClientProvider = Provider<ApiClient>((ref) => ApiClient());
+// ========== SERVICES DE BASE ==========
+
 final storageServiceProvider =
 Provider<StorageService>((ref) => StorageService(PreferencesService()));
 
-/// Sources de données
+final httpClientProvider = Provider<ApiClient>((ref) {
+  final storage = ref.read(storageServiceProvider);
+  return ApiClient(storage: storage);
+});
+
+// ========== AUTH DATA SOURCES ==========
+
 final authRemoteSourceProvider = Provider<AuthRemoteSource>(
       (ref) => AuthRemoteSource(ref.read(httpClientProvider)),
 );
@@ -65,7 +74,8 @@ final authLocalSourceProvider = Provider<AuthLocalSource>(
       (ref) => AuthLocalSource(ref.read(storageServiceProvider)),
 );
 
-/// Repository
+// ========== AUTH REPOSITORY ==========
+
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(
     remote: ref.read(authRemoteSourceProvider),
@@ -73,6 +83,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   );
 });
 
-/// Controller (nouveau système NotifierProvider)
+// ========== AUTH CONTROLLER ==========
+
 final authControllerProvider =
 NotifierProvider<AuthController, AuthState>(AuthController.new);

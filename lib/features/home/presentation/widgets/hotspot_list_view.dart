@@ -1,6 +1,9 @@
+// lib/features/home/presentation/widgets/hotspot_list_view.dart
+
 import 'package:flutter/material.dart';
 import '../../domain/entities/hotspot_entity.dart';
 import 'hotspot_card.dart';
+import 'empty_hotspots_view.dart';
 
 class HotspotListView extends StatelessWidget {
   const HotspotListView({
@@ -14,6 +17,12 @@ class HotspotListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ SI LISTE VIDE : Afficher Empty State
+    if (hotspots.isEmpty) {
+      return const EmptyHotspotsView();
+    }
+
+    // ✅ SI LISTE NON VIDE : Afficher les cards
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       itemCount: hotspots.length,
@@ -25,4 +34,3 @@ class HotspotListView extends StatelessWidget {
     );
   }
 }
-

@@ -467,6 +467,36 @@ abstract class AppLocalizations {
   /// **'Wifi Zone {number}'**
   String wifiZone(String number);
 
+  /// No description provided for @noHotspotsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No hotspots'**
+  String get noHotspotsTitle;
+
+  /// No description provided for @noHotspotsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any hotspots yet. Start by creating one!'**
+  String get noHotspotsMessage;
+
+  /// No description provided for @addFirstHotspot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add my first hotspot'**
+  String get addFirstHotspot;
+
+  /// No description provided for @vendor.
+  ///
+  /// In en, this message translates to:
+  /// **'Vendor'**
+  String get vendor;
+
+  /// No description provided for @pullToRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Pull to refresh'**
+  String get pullToRefresh;
+
   /// No description provided for @dailySale.
   ///
   /// In en, this message translates to:

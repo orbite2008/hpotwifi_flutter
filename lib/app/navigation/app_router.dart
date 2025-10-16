@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/services/preferences_service.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
+import '../../features/splash/splash_page.dart';
 import '../../features/home/domain/entities/hotspot_entity.dart';
 import '../../features/home/presentation/pages/add_hotspot_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
@@ -16,65 +17,6 @@ import '../../features/auth/presentation/pages/reset_success_page.dart';
 import '../../features/auth/presentation/pages/register_email_page.dart';
 import '../../features/auth/presentation/pages/register_details_page.dart';
 import '../../features/auth/presentation/pages/register_password_page.dart';
-
-// --- Page de chargement initiale ---
-class SplashPage extends ConsumerStatefulWidget {
-  const SplashPage({super.key});
-
-  @override
-  ConsumerState<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends ConsumerState<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-    _checkAuthAndNavigate();
-  }
-
-  Future<void> _checkAuthAndNavigate() async {
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
-
-    final authController = ref.read(authControllerProvider.notifier);
-    final isAuthenticated = await authController.checkAuthStatus();
-    final isFirstLaunch = await PreferencesService.isFirstLaunch();
-
-    if (!mounted) return;
-
-    if (isAuthenticated) {
-      context.goNamed('home');
-    } else if (isFirstLaunch) {
-      await PreferencesService.setNotFirstLaunch();
-      context.goNamed('registerEmail');
-    } else {
-      context.goNamed('login');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.wifi_tethering,
-              size: 100,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            const CircularProgressIndicator(),
-            const SizedBox(height: 16),
-            const Text('Chargement...'),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // --- Placeholders pages simples ---
 class PlaceholderPage extends StatelessWidget {

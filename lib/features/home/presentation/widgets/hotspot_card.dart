@@ -1,3 +1,5 @@
+// lib/features/home/presentation/widgets/hotspot_card.dart
+
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -7,6 +9,7 @@ import 'hotspot_status_dot.dart';
 
 class HotspotCard extends StatelessWidget {
   const HotspotCard({super.key, required this.hotspot, this.onTap});
+
   final HotspotEntity hotspot;
   final VoidCallback? onTap;
 
@@ -15,8 +18,13 @@ class HotspotCard extends StatelessWidget {
     final colors = AppColors.of(context);
     final loc = AppLocalizations.of(context)!;
 
-    final String roleLabel =
-    hotspot.role == HotspotRole.owner ? loc.owner : loc.assistant;
+    // ✅ GESTION DES 3 RÔLES : owner, assistant, vendor
+    final String roleLabel = switch (hotspot.role) {
+      HotspotRole.owner => loc.owner,
+      HotspotRole.assistant => loc.assistant,
+      HotspotRole.vendor => loc.vendor,
+    };
+
     final Color roleColor = hotspot.roleBadgeColor(context);
     final Color status = hotspot.statusColor(context);
 
@@ -105,10 +113,22 @@ class HotspotCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(loc.dailySale,
-                        style: TextStyle(fontSize: 11, color: colors.textSecondary, fontWeight: FontWeight.w500)),
-                    Text(loc.users,
-                        style: TextStyle(fontSize: 11, color: colors.textSecondary, fontWeight: FontWeight.w500)),
+                    Text(
+                      loc.dailySale,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: colors.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      loc.users,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: colors.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -121,12 +141,13 @@ class HotspotCard extends StatelessWidget {
             right: -1.5,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: roleColor,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   bottomRight: Radius.circular(10.5),
                 ),
-              ).copyWith(color: roleColor),
+              ),
               child: Text(
                 roleLabel,
                 style: const TextStyle(

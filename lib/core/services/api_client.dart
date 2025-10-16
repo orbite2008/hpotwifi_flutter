@@ -3,11 +3,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../constants/app_constants.dart';
-// import '../constants/api_paths.dart';  // on l'importera au moment d'utiliser des endpoints
+import 'storage_service.dart';
 
 class ApiClient {
   final http.Client _http;
-  ApiClient({http.Client? httpClient}) : _http = httpClient ?? http.Client();
+  final StorageService _storage;
+
+  ApiClient({
+    http.Client? httpClient,
+    required StorageService storage,
+  })  : _http = httpClient ?? http.Client(),
+        _storage = storage;
 
   Uri buildUri(String path, [Map<String, String>? query]) =>
       ApiConfig.uri(path, query);
@@ -16,9 +22,10 @@ class ApiClient {
       String path, {
         Map<String, String>? query,
         Map<String, String>? headers,
-      }) {
+      }) async {
     final uri = buildUri(path, query);
-    return _http.get(uri, headers: _baseHeaders(headers));
+    final allHeaders = await _baseHeaders(headers);
+    return _http.get(uri, headers: allHeaders);
   }
 
   Future<http.Response> postJson(
@@ -26,18 +33,28 @@ class ApiClient {
       Map<String, dynamic> body, {
         Map<String, String>? query,
         Map<String, String>? headers,
-      }) {
+      }) async {
     final uri = buildUri(path, query);
-    final allHeaders = _baseHeaders(headers)
-      ..putIfAbsent('Content-Type', () => 'application/json');
+    final allHeaders = await _baseHeaders(headers);
+    allHeaders.putIfAbsent('Content-Type', () => 'application/json');
     return _http.post(uri, headers: allHeaders, body: jsonEncode(body));
   }
 
-  Map<String, String> _baseHeaders(Map<String, String>? headers) {
-    return {
+  /// ✅ MODIFIÉ : Charge le token depuis storage et l'ajoute automatiquement
+  Future<Map<String, String>> _baseHeaders(Map<String, String>? headers) async {
+    final token = await _storage.readToken();
+
+    final baseHeaders = {
       'Accept': 'application/json',
       ...?headers,
     };
+
+    // Ajoute le token JWT si disponible
+    if (token != null && token.isNotEmpty) {
+      baseHeaders['Authorization'] = 'Bearer $token';
+    }
+
+    return baseHeaders;
   }
 
   void close() => _http.close();

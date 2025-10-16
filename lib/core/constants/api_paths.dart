@@ -6,4 +6,7 @@ class ApiPaths {
   // Inscription & connexion
   static const String register  = "/user/register";
   static const String login = '/auth/login';
+
+  // Hotspots
+  static const String listHotspot = '/hotspot/listHotspot';
 }

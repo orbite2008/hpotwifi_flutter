@@ -24,6 +24,7 @@ class AppColors {
   // Couleurs de badge (rôle)
   final Color ownerBadge;
   final Color assistantBadge;
+  final Color vendorBadge;
 
   const AppColors({
     required this.primary,
@@ -44,6 +45,7 @@ class AppColors {
     required this.separatorLight,
     required this.ownerBadge,
     required this.assistantBadge,
+    required this.vendorBadge,
   });
 
   /// Palette claire
@@ -68,8 +70,9 @@ class AppColors {
     separatorLight: Color(0x1A000000),
 
     // Badges
-    ownerBadge: Color(0xFF9AC3FF),
-    assistantBadge: Color(0xFFB0B0B0),
+    ownerBadge: Color(0xFF2196F3),
+    assistantBadge: Color(0xFFFF9800),
+    vendorBadge: Color(0xFF4CAF50),
   );
 
   /// Palette sombre
@@ -94,8 +97,9 @@ class AppColors {
     separatorLight: Color(0x1AFFFFFF),
 
     // Badges
-    ownerBadge: Color(0xFF5C8EDC),
-    assistantBadge: Color(0xFF666666),
+    ownerBadge: Color(0xFF1976D2),
+    assistantBadge: Color(0xFFF57C00),
+    vendorBadge: Color(0xFF388E3C),
   );
 
   /// Sélecteur de palette selon le thème

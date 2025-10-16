@@ -199,6 +199,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get noHotspotsTitle => 'No hotspots';
+
+  @override
+  String get noHotspotsMessage => 'You don\'t have any hotspots yet. Start by creating one!';
+
+  @override
+  String get addFirstHotspot => 'Add my first hotspot';
+
+  @override
+  String get vendor => 'Vendor';
+
+  @override
+  String get pullToRefresh => 'Pull to refresh';
+
+  @override
   String get dailySale => 'Daily sale';
 
   @override

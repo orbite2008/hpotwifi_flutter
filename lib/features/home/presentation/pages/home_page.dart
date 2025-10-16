@@ -1,9 +1,15 @@
+// lib/features/home/presentation/pages/home_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../app/providers/global_providers.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../auth/data/repositories/auth_repository.dart';
+import '../../domain/entities/hotspot_entity.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/hotspot_list_view.dart';
 import '../widgets/user_greeting_section.dart';
@@ -34,30 +40,36 @@ class _HomePageState extends ConsumerState<HomePage> {
     final hotspotsState = ref.watch(homeControllerProvider);
     final query = ref.watch(hotspotSearchQueryProvider);
 
+    final authRepo = ref.read(authRepositoryProvider);
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: colors.background,
         appBar: const AuthAppBar(
-          title: "HpotWifi",
+          title: AppConstants.appName,
           showReportButton: true,
           showTicketButton: true,
         ),
-
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserGreetingSection(
-              userName: 'Tynisha',
-              searchController: _search,
-              onChanged:
-                  (value) =>
-                      ref.read(hotspotSearchQueryProvider.notifier).state =
-                          value,
+            // Section salutation + recherche
+            FutureBuilder(
+              future: authRepo.currentUser(),
+              builder: (context, snapshot) {
+                final userName = snapshot.data?.fullName.split(' ').first ?? '';
+                return UserGreetingSection(
+                  userName: userName,
+                  searchController: _search,
+                  onChanged: (value) =>
+                  ref.read(hotspotSearchQueryProvider.notifier).state = value,
+                );
+              },
             ),
             const SizedBox(height: 16),
 
-            // 🔹 Titre + badge compteur
+            // Titre + badge compteur
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: hotspotsState.when(
@@ -70,49 +82,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                 },
               ),
             ),
-
             const SizedBox(height: 16),
 
-            // 🔹 Liste des hotspots
+            // Liste des hotspots
             Expanded(
               child: hotspotsState.when(
                 loading: () => const HomeLoadingView(),
-                error:
-                    (e, _) => HomeErrorView(
-                      message: e.toString(),
-                      onRetry:
-                          () =>
-                              ref
-                                  .read(homeControllerProvider.notifier)
-                                  .refresh(),
-                    ),
-                data: (list) {
-                  final q = query.toLowerCase().trim();
-                  final filtered =
-                      q.isEmpty
-                          ? list
-                          : list
-                              .where(
-                                (h) =>
-                                    h.name.toLowerCase().contains(q) ||
-                                    h.wifiZone.toLowerCase().contains(q),
-                              )
-                              .toList();
-
-                  final adjusted =
-                      filtered.map((h) {
-                        if (!h.isActive && h.usersOnline > 0) {
-                          return h.copyWith(usersOnline: 0);
-                        }
-                        return h;
-                      }).toList();
-                  return HotspotListView(
-                    hotspots: adjusted,
-                    onTapHotspot: (h) {
-                      context.pushNamed('hotspotDetail', extra: h);
-                    },
-                  );
-                },
+                error: (e, _) => HomeErrorView(
+                  message: e.toString(),
+                  onRetry: () => ref.read(homeControllerProvider.notifier).refresh(),
+                ),
+                data: (list) => _buildHotspotList(list, query, context),
               ),
             ),
           ],
@@ -121,12 +101,53 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  /// Construit la liste des hotspots avec filtrage et pull-to-refresh
+  Widget _buildHotspotList(
+      List<HotspotEntity> list,
+      String query,
+      BuildContext context,
+      ) {
+    // Filtrage par recherche
+    final q = query.toLowerCase().trim();
+    final filtered = q.isEmpty
+        ? list
+        : list
+        .where(
+          (h) =>
+      h.name.toLowerCase().contains(q) ||
+          h.wifiZone.toLowerCase().contains(q),
+    )
+        .toList();
+
+    // Ajustement business logic
+    final adjusted = filtered.map((h) {
+      if (!h.isActive && h.usersOnline > 0) {
+        return h.copyWith(usersOnline: 0);
+      }
+      return h;
+    }).toList();
+
+    // ✅ AJOUT: RefreshIndicator pour pull-to-refresh
+    return RefreshIndicator(
+      onRefresh: () async {
+        await ref.read(homeControllerProvider.notifier).refresh();
+      },
+      child: HotspotListView(
+        hotspots: adjusted,
+        onTapHotspot: (h) {
+          context.pushNamed('hotspotDetail', extra: h);
+        },
+      ),
+    );
+  }
+
+  /// Header avec titre + badge actif/total
   Widget _buildHeader(
-    AppLocalizations loc,
-    AppColors colors,
-    int active,
-    int total,
-  ) {
+      AppLocalizations loc,
+      AppColors colors,
+      int active,
+      int total,
+      ) {
     return Row(
       children: [
         Text(
@@ -157,6 +178,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
+  /// Skeleton du header pendant le chargement
   Widget _buildHeaderSkeleton(AppColors colors, AppLocalizations loc) {
     return Row(
       children: [

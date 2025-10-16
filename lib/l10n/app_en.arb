@@ -85,6 +85,11 @@
       }
     }
   },
+  "noHotspotsTitle": "No hotspots",
+  "noHotspotsMessage": "You don't have any hotspots yet. Start by creating one!",
+  "addFirstHotspot": "Add my first hotspot",
+  "vendor": "Vendor",
+  "pullToRefresh": "Pull to refresh",
   "dailySale": "Daily sale",
   "online": "online",
   "users": "users",
