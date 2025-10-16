@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get darkMode => 'Dark mode';
+  String get darkMode => 'Dark Mode';
 
   @override
   String get loading => 'Loading...';
@@ -246,9 +246,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mySellers => 'My sellers';
 
   @override
-  String get logout => 'Logout';
-
-  @override
   String get manageTickets => 'Ticket management';
 
   @override
@@ -378,4 +375,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get package => 'Package';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get privacySettings => 'Privacy Settings';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get french => 'French';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get logout => 'Logout';
 }

@@ -1,10 +1,9 @@
 {
   "@@locale": "en",
-
   "appTitle": "HpotWiFi",
   "welcome": "Welcome to Hotspot Wifi",
   "language": "Language",
-  "darkMode": "Dark mode",
+  "darkMode": "Dark Mode",
   "loading": "Loading...",
 
   "signupCreateAccountTitle": "Create account",
@@ -88,7 +87,6 @@
   "addHotspot": "Add a hotspot",
   "packageManagement": "Package management",
   "mySellers": "My sellers",
-  "logout": "Logout",
   "manageTickets": "Ticket management",
   "report": "Report",
   "myProfile": "My profile",
@@ -126,7 +124,6 @@
   "districtLabel": "District",
   "error": "Error",
 
-
   "graph": "Graph",
   "userList": "User list",
   "activationHistory": "Activation history",
@@ -137,5 +134,14 @@
   "city": "City:",
   "connected": "Connected",
   "disconnected": "Disconnected",
-  "package": "Package"
+  "package": "Package",
+
+  "settingsTitle": "Settings",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "privacySettings": "Privacy Settings",
+  "about": "About",
+  "french": "French",
+  "english": "English",
+  "logout": "Logout"
 }

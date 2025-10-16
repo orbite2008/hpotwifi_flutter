@@ -18,7 +18,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
-  String get darkMode => 'Mode sombre';
+  String get darkMode => 'Mode Sombre';
 
   @override
   String get loading => 'Chargement en cours...';
@@ -246,9 +246,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mySellers => 'Mes vendeurs';
 
   @override
-  String get logout => 'Déconnexion';
-
-  @override
   String get manageTickets => 'Gestion des tickets';
 
   @override
@@ -378,4 +375,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get package => 'Forfait de';
+
+  @override
+  String get settingsTitle => 'Paramètre';
+
+  @override
+  String get editProfile => 'Modifier Profil';
+
+  @override
+  String get changePassword => 'Changer mot de passe';
+
+  @override
+  String get privacySettings => 'Paramètre de Confidentialité';
+
+  @override
+  String get about => 'A propos';
+
+  @override
+  String get french => 'Français';
+
+  @override
+  String get english => 'Anglais';
+
+  @override
+  String get logout => 'Déconnecter';
 }

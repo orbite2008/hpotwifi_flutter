@@ -141,5 +141,19 @@
   "city": "Ville:",
   "connected": "Connecté",
   "disconnected": "Déconnecté",
-  "package": "Forfait de"
+  "package": "Forfait de",
+
+
+  "settingsTitle": "Paramètre",
+  "editProfile": "Modifier Profil",
+  "changePassword": "Changer mot de passe",
+  "darkMode": "Mode Sombre",
+  "language": "Langue",
+  "privacySettings": "Paramètre de Confidentialité",
+  "about": "A propos",
+  "logout": "Déconnecter",
+  "french": "Français",
+  "english": "Anglais"
+
+
 }

@@ -116,7 +116,7 @@ abstract class AppLocalizations {
   /// No description provided for @darkMode.
   ///
   /// In en, this message translates to:
-  /// **'Dark mode'**
+  /// **'Dark Mode'**
   String get darkMode;
 
   /// No description provided for @loading.
@@ -557,12 +557,6 @@ abstract class AppLocalizations {
   /// **'My sellers'**
   String get mySellers;
 
-  /// No description provided for @logout.
-  ///
-  /// In en, this message translates to:
-  /// **'Logout'**
-  String get logout;
-
   /// No description provided for @manageTickets.
   ///
   /// In en, this message translates to:
@@ -820,6 +814,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Package'**
   String get package;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @privacySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Settings'**
+  String get privacySettings;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @french.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get french;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
