@@ -377,12 +377,6 @@ abstract class AppLocalizations {
   /// **'Enter your email address to receive a reset link.'**
   String get forgotPasswordSubtitle;
 
-  /// No description provided for @continueButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Send link'**
-  String get continueButton;
-
   /// No description provided for @resetLinkSent.
   ///
   /// In en, this message translates to:
@@ -447,7 +441,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Hi, {name}!'**
-  String greeting(String name);
+  String greeting(Object name);
 
   /// No description provided for @searchHotspots.
   ///
@@ -465,7 +459,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Wifi Zone {number}'**
-  String wifiZone(String number);
+  String wifiZone(Object number);
 
   /// No description provided for @noHotspotsTitle.
   ///
@@ -533,6 +527,18 @@ abstract class AppLocalizations {
   /// **'f'**
   String get fcfa;
 
+  /// No description provided for @noSearchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get noSearchResults;
+
+  /// No description provided for @noSearchResultsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No hotspot matches \"{query}\".\nTry a different search term.'**
+  String noSearchResultsMessage(Object query);
+
   /// No description provided for @addHotspot.
   ///
   /// In en, this message translates to:
@@ -575,6 +581,30 @@ abstract class AppLocalizations {
   /// **'My profile'**
   String get myProfile;
 
+  /// No description provided for @hotspotCreatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot created!'**
+  String get hotspotCreatedTitle;
+
+  /// No description provided for @hotspotCreatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The hotspot \"{name}\" has been successfully created.'**
+  String hotspotCreatedMessage(Object name);
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
   /// No description provided for @addHotspotTitle.
   ///
   /// In en, this message translates to:
@@ -599,18 +629,6 @@ abstract class AppLocalizations {
   /// **'City'**
   String get cityHint;
 
-  /// No description provided for @districtLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'District'**
-  String get districtLabel;
-
-  /// No description provided for @districtHint.
-  ///
-  /// In en, this message translates to:
-  /// **'District'**
-  String get districtHint;
-
   /// No description provided for @zoneLabel.
   ///
   /// In en, this message translates to:
@@ -622,18 +640,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zone'**
   String get zoneHint;
-
-  /// No description provided for @descriptionLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get descriptionLabel;
-
-  /// No description provided for @descriptionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Description'**
-  String get descriptionHint;
 
   /// No description provided for @addButton.
   ///
@@ -647,11 +653,41 @@ abstract class AppLocalizations {
   /// **'This field is required'**
   String get fieldRequired;
 
-  /// No description provided for @hotspotWillBeCreated.
+  /// No description provided for @filters.
   ///
   /// In en, this message translates to:
-  /// **'Hotspot \"{name}\" will be created (feature to be implemented)'**
-  String hotspotWillBeCreated(String name);
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @graphComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Graph coming soon'**
+  String get graphComingSoon;
+
+  /// No description provided for @noUsersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get noUsersFound;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 
   /// No description provided for @editHotspotTitle.
   ///
@@ -683,11 +719,41 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get editButton;
 
-  /// No description provided for @hotspotUpdatedSuccess.
+  /// No description provided for @editableFieldsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Hotspot updated successfully (feature to be implemented)'**
-  String get hotspotUpdatedSuccess;
+  /// **'Editable fields'**
+  String get editableFieldsLabel;
+
+  /// No description provided for @hotspotActiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot active'**
+  String get hotspotActiveLabel;
+
+  /// No description provided for @saveChangesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChangesButton;
+
+  /// No description provided for @backButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get backButton;
+
+  /// No description provided for @districtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get districtLabel;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
 
   /// No description provided for @graph.
   ///

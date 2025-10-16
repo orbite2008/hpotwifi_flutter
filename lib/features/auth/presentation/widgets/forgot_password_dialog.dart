@@ -127,7 +127,7 @@ Future<void> showForgotPasswordDialog(BuildContext context) async {
 
                         // 🔹 Bouton Envoyer
                         AppButton(
-                          label: loc.continueButton,
+                          label: loc.continueBtn,
                           enabled: filled,
                           onPressed:
                           filled ? () => sendResetLink(setState) : null,

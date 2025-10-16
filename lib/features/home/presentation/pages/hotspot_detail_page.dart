@@ -1,30 +1,40 @@
-// lib/features/hotspot_detail/presentation/pages/hotspot_detail_page.dart
+// lib/features/home/presentation/pages/hotspot_detail_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/hotspot_info_card.dart';
-import '../../../../core/widgets/custom_tab_button.dart';
+import '../../../../core/widgets/horizontal_tab_bar.dart';
 import '../../../../core/widgets/search_filter_bar.dart';
 import '../../../../core/widgets/user_list_item.dart';
 import '../../../../core/widgets/custom_fab.dart';
+import '../../../../core/widgets/auth_app_bar.dart';
+import '../../../../core/widgets/empty_state_view.dart';
+import '../../../../core/widgets/filter_dialog.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../home/domain/entities/hotspot_entity.dart';
+import '../controllers/hotspot_detail_controller.dart';
 
-class HotspotDetailPage extends StatefulWidget {
-  final HotspotEntity? hotspot;
+/// Page de détails d'un hotspot
+///
+/// Reçoit l'ID du hotspot et charge les données depuis l'API
+class HotspotDetailPage extends ConsumerStatefulWidget {
+  final int hotspotId;
 
-  const HotspotDetailPage({super.key, this.hotspot});
+  const HotspotDetailPage({
+    super.key,
+    required this.hotspotId,
+  });
 
   @override
-  State<HotspotDetailPage> createState() => _HotspotDetailPageState();
+  ConsumerState<HotspotDetailPage> createState() => _HotspotDetailPageState();
 }
 
-class _HotspotDetailPageState extends State<HotspotDetailPage> {
+class _HotspotDetailPageState extends ConsumerState<HotspotDetailPage> {
   int _selectedTabIndex = 1;
   final _searchController = TextEditingController();
   String _searchQuery = '';
-  
+
   // Filtres
   bool _showConnected = true;
   bool _showDisconnected = true;
@@ -49,126 +59,125 @@ class _HotspotDetailPageState extends State<HotspotDetailPage> {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     final loc = AppLocalizations.of(context)!;
-    final hotspot = widget.hotspot;
+
+    final hotspotAsync = ref.watch(hotspotDetailControllerProvider(widget.hotspotId));
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBar(
-        backgroundColor: colors.surface,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: colors.textPrimary),
-          onPressed: () => context.pop(),
+      appBar: AuthAppBar(
+        title: hotspotAsync.when(
+          data: (hotspot) => hotspot.hotspotwifiname,
+          loading: () => loc.loading,
+          error: (_, __) => 'Erreur',
         ),
-        title: Text(
-          hotspot?.name ?? 'Wifi Zone 1',
-          style: TextStyle(
-            color: colors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+        showReportButton: false,
+        showTicketButton: false,
+      ),
+      body: hotspotAsync.when(
+        loading: () => Center(
+          child: CircularProgressIndicator(color: colors.primary),
+        ),
+        error: (error, stack) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 80, color: colors.error),
+              const SizedBox(height: 16),
+              Text(
+                error.toString(),
+                style: TextStyle(fontSize: 16, color: colors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.refresh(hotspotDetailControllerProvider(widget.hotspotId)),
+                child: Text(loc.retry),
+              ),
+            ],
           ),
         ),
+        data: (hotspot) => _buildContent(hotspot, colors, loc),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: HotspotInfoCard(
-              zone: 'Houèkègbo',
-              wifiName: hotspot?.name ?? 'Wifi zone 1',
-              district: 'Agla',
-              city: 'Cotonou',
-              onEdit: () => context.pushNamed('editHotspot'),
-            ),
-          ),
-
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  CustomTabButton(
-                    label: loc.graph,
-                    isSelected: _selectedTabIndex == 0,
-                    onTap: () => setState(() => _selectedTabIndex = 0),
-                  ),
-                  const SizedBox(width: 8),
-                  CustomTabButton(
-                    label: loc.userList,
-                    isSelected: _selectedTabIndex == 1,
-                    onTap: () => setState(() => _selectedTabIndex = 1),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  CustomTabButton(
-                    label: loc.activationHistory,
-                    isSelected: false,
-                    onTap: () {},
-                  ),
-                  const SizedBox(width: 8),
-                  CustomTabButton(
-                    label: loc.ticketManagement,
-                    isSelected: false,
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SearchFilterBar(
-              controller: _searchController,
-              hintText: 'Rechercher',
-              onFilterTap: () => _showFilterDialog(context, colors, loc),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          Expanded(
-            child: _selectedTabIndex == 0
-                ? _buildGraphView(colors)
-                : _buildUserListView(colors, loc),
-          ),
-        ],
-      ),
-      floatingActionButton: _selectedTabIndex == 1
-          ? CustomFab(onPressed: () {})
-          : null,
     );
   }
 
-  Widget _buildGraphView(AppColors colors) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.bar_chart, size: 80, color: colors.disabled),
-          const SizedBox(height: 16),
-          Text(
-            'Graphique à venir',
-            style: TextStyle(fontSize: 16, color: colors.textSecondary),
+  Widget _buildContent(dynamic hotspot, AppColors colors, AppLocalizations loc) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: HotspotInfoCard(
+            zone: hotspot.hotspotzonename,
+            wifiName: hotspot.hotspotwifiname,
+            district: hotspot.neighborhood,
+            city: hotspot.city,
+            onEdit: () => context.pushNamed(
+              'editHotspot',
+              pathParameters: {'id': widget.hotspotId.toString()}, // ✅ CORRECTION
+            ),
           ),
-        ],
-      ),
+        ),
+
+        // Tabs primaires
+        HorizontalTabBar(
+          tabs: [
+            TabItem(
+              label: loc.graph,
+              isSelected: _selectedTabIndex == 0,
+              onTap: () => setState(() => _selectedTabIndex = 0),
+            ),
+            TabItem(
+              label: loc.userList,
+              isSelected: _selectedTabIndex == 1,
+              onTap: () => setState(() => _selectedTabIndex = 1),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        // Tabs secondaires
+        HorizontalTabBar(
+          tabs: [
+            TabItem(
+              label: loc.activationHistory,
+              isSelected: false,
+              onTap: () {},
+            ),
+            TabItem(
+              label: loc.ticketManagement,
+              isSelected: false,
+              onTap: () {},
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SearchFilterBar(
+            controller: _searchController,
+            hintText: 'Rechercher',
+            onFilterTap: _showFilterDialog,
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        Expanded(
+          child: _selectedTabIndex == 0
+              ? _buildGraphView(loc)
+              : _buildUserListView(colors, loc),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGraphView(AppLocalizations loc) {
+    return EmptyStateView(
+      icon: Icons.bar_chart,
+      message: loc.graphComingSoon,
     );
   }
 
@@ -181,22 +190,12 @@ class _HotspotDetailPageState extends State<HotspotDetailPage> {
       {'id': '99887766', 'isConnected': false, 'package': 500},
     ];
 
-    // Filtrage
-    final filteredUsers = allUsers.where((user) {
-      final matchesSearch = _searchQuery.isEmpty || 
-                           user['id'].toString().toLowerCase().contains(_searchQuery);
-      final isConnected = user['isConnected'] as bool;
-      final matchesFilter = (isConnected && _showConnected) || 
-                           (!isConnected && _showDisconnected);
-      return matchesSearch && matchesFilter;
-    }).toList();
+    final filteredUsers = _filterUsers(allUsers);
 
     if (filteredUsers.isEmpty) {
-      return Center(
-        child: Text(
-          'Aucun utilisateur trouvé',
-          style: TextStyle(fontSize: 16, color: colors.textSecondary),
-        ),
+      return EmptyStateView(
+        icon: Icons.person_off,
+        message: loc.noUsersFound,
       );
     }
 
@@ -206,7 +205,7 @@ class _HotspotDetailPageState extends State<HotspotDetailPage> {
       itemBuilder: (context, index) {
         final user = filteredUsers[index];
         final isConnected = user['isConnected'] as bool;
-        
+
         return UserListItem(
           userId: user['id'].toString(),
           status: isConnected ? loc.connected : loc.disconnected,
@@ -217,91 +216,29 @@ class _HotspotDetailPageState extends State<HotspotDetailPage> {
     );
   }
 
-  // ✅ Dialog au lieu de BottomSheet (plus stable)
-  void _showFilterDialog(BuildContext context, AppColors colors, AppLocalizations loc) {
-    bool tempConnected = _showConnected;
-    bool tempDisconnected = _showDisconnected;
+  List<Map<String, dynamic>> _filterUsers(List<Map<String, dynamic>> users) {
+    return users.where((user) {
+      final matchesSearch = _searchQuery.isEmpty ||
+          user['id'].toString().toLowerCase().contains(_searchQuery);
+      final isConnected = user['isConnected'] as bool;
+      final matchesFilter = (isConnected && _showConnected) ||
+          (!isConnected && _showDisconnected);
+      return matchesSearch && matchesFilter;
+    }).toList();
+  }
 
-    showDialog(
+  Future<void> _showFilterDialog() async {
+    final result = await showFilterDialog(
       context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              backgroundColor: colors.surface,
-              title: Text(
-                'Filtres',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: colors.textPrimary,
-                ),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Checkbox Connecté
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: tempConnected,
-                        activeColor: colors.primary,
-                        onChanged: (value) {
-                          setDialogState(() {
-                            tempConnected = value ?? true;
-                          });
-                        },
-                      ),
-                      Text(
-                        loc.connected,
-                        style: TextStyle(color: colors.textPrimary),
-                      ),
-                    ],
-                  ),
-                  
-                  // Checkbox Déconnecté
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: tempDisconnected,
-                        activeColor: colors.primary,
-                        onChanged: (value) {
-                          setDialogState(() {
-                            tempDisconnected = value ?? true;
-                          });
-                        },
-                      ),
-                      Text(
-                        loc.disconnected,
-                        style: TextStyle(color: colors.textPrimary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Annuler', style: TextStyle(color: colors.textSecondary)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _showConnected = tempConnected;
-                      _showDisconnected = tempDisconnected;
-                    });
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colors.primary,
-                  ),
-                  child: const Text('Appliquer', style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      initialShowConnected: _showConnected,
+      initialShowDisconnected: _showDisconnected,
     );
+
+    if (result != null) {
+      setState(() {
+        _showConnected = result.showConnected;
+        _showDisconnected = result.showDisconnected;
+      });
+    }
   }
 }

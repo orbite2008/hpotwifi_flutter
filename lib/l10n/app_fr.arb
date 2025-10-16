@@ -1,5 +1,6 @@
 {
   "@@locale": "fr",
+
   "appTitle": "HpotWiFi",
   "welcome": "Bienvenue dans Hotspot Wifi",
   "language": "Langue",
@@ -53,7 +54,6 @@
 
   "forgotPasswordTitle": "Mot de passe oublié ?",
   "forgotPasswordSubtitle": "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.",
-  "continueButton": "Envoyer le lien",
   "resetLinkSent": "Lien de réinitialisation envoyé !",
   "checkYourEmail": "Veuillez vérifier votre boîte mail pour continuer.",
 
@@ -68,23 +68,9 @@
   "phoneInvalid": "Numéro de téléphone invalide.",
 
   "greeting": "Salut, {name} !",
-  "@greeting": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "searchHotspots": "Rechercher un hotspot",
   "myHotspots": "Mes hotspots",
   "wifiZone": "Wifi Zone {number}",
-  "@wifiZone": {
-    "placeholders": {
-      "number": {
-        "type": "String"
-      }
-    }
-  },
   "noHotspotsTitle": "Aucun hotspot",
   "noHotspotsMessage": "Vous n'avez pas encore de hotspot. Commencez par en créer un !",
   "addFirstHotspot": "Ajouter mon premier hotspot",
@@ -96,6 +82,8 @@
   "owner": "Propriétaire",
   "assistant": "Assistant",
   "fcfa": "f",
+  "noSearchResults": "Aucun résultat trouvé",
+  "noSearchResultsMessage": "Aucun hotspot ne correspond à \"{query}\".\nEssayez un autre terme de recherche.",
 
   "addHotspot": "Ajouter un hotspot",
   "packageManagement": "Gestion des forfaits",
@@ -105,33 +93,44 @@
   "report": "Rapport",
   "myProfile": "Mon profil",
 
+  "hotspotCreatedTitle": "Hotspot créé !",
+  "hotspotCreatedMessage": "Le hotspot \"{name}\" a été créé avec succès.",
+  "copy": "Copier",
+  "ok": "OK",
+
   "addHotspotTitle": "Ajouter un hotspot",
   "wifiNameLabel": "Nom du wifi",
   "wifiNameHint": "Entrez le nom du wifi",
   "cityHint": "Ville",
-  "districtLabel": "Quartier",
-  "districtHint": "Quartier",
   "zoneLabel": "Zone",
   "zoneHint": "Zone",
-  "descriptionLabel": "Description",
-  "descriptionHint": "Description",
   "addButton": "Ajouter",
   "fieldRequired": "Ce champ est requis",
-  "hotspotWillBeCreated": "Hotspot \"{name}\" sera créé (fonctionnalité à implémenter)",
-  "@hotspotWillBeCreated": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-    "editHotspotTitle": "Modifier un hospot",
+
+  "filters": "Filtres",
+  "apply": "Appliquer",
+  "cancel": "Annuler",
+  "graphComingSoon": "Graphique à venir",
+  "noUsersFound": "Aucun utilisateur trouvé",
+  "retry": "Réessayer",
+
+  "editHotspotTitle": "Modifier un hotspot",
   "serverNameLabel": "Nom du serveur:",
   "routerNameLabel": "Nom du routeur:",
   "bridgeNameLabel": "Nom du bridge:",
   "editButton": "Modifier",
-  "hotspotUpdatedSuccess": "Hotspot modifié avec succès (fonctionnalité à implémenter)",
-  
+  "editableFields": "Champs modifiables",
+  "hotspotActive": "Hotspot actif",
+  "saveChanges": "Enregistrer les modifications",
+  "editableFieldsLabel": "Champs modifiables",
+  "hotspotActiveLabel": "Hotspot actif",
+  "saveChangesButton": "Enregistrer les modifications",
+  "backButton": "Retour",
+  "districtLabel": "Quartier",
+  "error": "Erreur",
+
+
+
   "graph": "Graphe",
   "userList": "Liste des utilisateurs",
   "activationHistory": "Historique d'activation",
@@ -143,5 +142,4 @@
   "connected": "Connecté",
   "disconnected": "Déconnecté",
   "package": "Forfait de"
-
 }

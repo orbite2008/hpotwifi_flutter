@@ -18,6 +18,7 @@ class ApiClient {
   Uri buildUri(String path, [Map<String, String>? query]) =>
       ApiConfig.uri(path, query);
 
+  /// GET request
   Future<http.Response> get(
       String path, {
         Map<String, String>? query,
@@ -28,6 +29,7 @@ class ApiClient {
     return _http.get(uri, headers: allHeaders);
   }
 
+  /// POST request avec JSON
   Future<http.Response> postJson(
       String path,
       Map<String, dynamic> body, {
@@ -40,7 +42,20 @@ class ApiClient {
     return _http.post(uri, headers: allHeaders, body: jsonEncode(body));
   }
 
-  /// ✅ MODIFIÉ : Charge le token depuis storage et l'ajoute automatiquement
+  /// ✅ NOUVEAU : PUT request avec JSON
+  Future<http.Response> putJson(
+      String path,
+      Map<String, dynamic> body, {
+        Map<String, String>? query,
+        Map<String, String>? headers,
+      }) async {
+    final uri = buildUri(path, query);
+    final allHeaders = await _baseHeaders(headers);
+    allHeaders.putIfAbsent('Content-Type', () => 'application/json');
+    return _http.put(uri, headers: allHeaders, body: jsonEncode(body));
+  }
+
+  /// Charge le token depuis storage et l'ajoute automatiquement
   Future<Map<String, String>> _baseHeaders(Map<String, String>? headers) async {
     final token = await _storage.readToken();
 

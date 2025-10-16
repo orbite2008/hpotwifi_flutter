@@ -1,3 +1,5 @@
+// lib/core/widgets/auth_app_bar.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -29,12 +31,12 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
       brightness == Brightness.dark ? Brightness.light : Brightness.dark,
     ));
 
-    // Vérifie si on est sur la page d’accueil
     final isHomePage = currentRoute == '/' || currentRoute == '/home';
 
     return AppBar(
       backgroundColor: colors.surface,
       elevation: 0,
+      scrolledUnderElevation: 0,
       automaticallyImplyLeading: !isHomePage,
       toolbarHeight: 64,
       titleSpacing: 16,
@@ -57,7 +59,6 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ],
           ),
-
 
           if (isHomePage)
             Row(

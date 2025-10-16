@@ -114,32 +114,30 @@ class _HomePageState extends ConsumerState<HomePage> {
         : list
         .where(
           (h) =>
-      h.name.toLowerCase().contains(q) ||
-          h.wifiZone.toLowerCase().contains(q),
+      h.hotspotwifiname.toLowerCase().contains(q) ||
+          h.hotspotzonename.toLowerCase().contains(q),
     )
         .toList();
 
     // Ajustement business logic
     final adjusted = filtered.map((h) {
-      if (!h.isActive && h.usersOnline > 0) {
+      if (!h.enable && h.usersOnline > 0) {
         return h.copyWith(usersOnline: 0);
       }
       return h;
     }).toList();
 
-    // ✅ AJOUT: RefreshIndicator pour pull-to-refresh
     return RefreshIndicator(
       onRefresh: () async {
         await ref.read(homeControllerProvider.notifier).refresh();
       },
       child: HotspotListView(
         hotspots: adjusted,
-        onTapHotspot: (h) {
-          context.pushNamed('hotspotDetail', extra: h);
-        },
+        searchQuery: q,
       ),
     );
   }
+
 
   /// Header avec titre + badge actif/total
   Widget _buildHeader(

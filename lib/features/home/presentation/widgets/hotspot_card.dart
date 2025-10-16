@@ -1,6 +1,7 @@
 // lib/features/home/presentation/widgets/hotspot_card.dart
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/hotspot_entity.dart';
@@ -18,7 +19,6 @@ class HotspotCard extends StatelessWidget {
     final colors = AppColors.of(context);
     final loc = AppLocalizations.of(context)!;
 
-    // ✅ GESTION DES 3 RÔLES : owner, assistant, vendor
     final String roleLabel = switch (hotspot.role) {
       HotspotRole.owner => loc.owner,
       HotspotRole.assistant => loc.assistant,
@@ -29,7 +29,13 @@ class HotspotCard extends StatelessWidget {
     final Color status = hotspot.statusColor(context);
 
     return GestureDetector(
-      onTap: onTap,
+
+      onTap: onTap ?? () {
+        context.pushNamed(
+          'hotspotDetail',
+          extra: hotspot.id,
+        );
+      },
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -43,7 +49,6 @@ class HotspotCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Ligne statut + titre
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -52,7 +57,7 @@ class HotspotCard extends StatelessWidget {
                       child: HotspotStatusDot(color: status, size: 14),
                     ),
                     Text(
-                      hotspot.name,
+                      hotspot.hotspotwifiname,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -68,10 +73,9 @@ class HotspotCard extends StatelessWidget {
                 Container(height: 1, color: colors.border.withValues(alpha: 0.5)),
                 const SizedBox(height: 12),
 
-                // Zone
                 Center(
                   child: Text(
-                    hotspot.wifiZone,
+                    hotspot.hotspotzonename,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -81,7 +85,6 @@ class HotspotCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                // Montant / utilisateurs
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -135,7 +138,6 @@ class HotspotCard extends StatelessWidget {
             ),
           ),
 
-          // Badge de rôle
           Positioned(
             bottom: -1.5,
             right: -1.5,

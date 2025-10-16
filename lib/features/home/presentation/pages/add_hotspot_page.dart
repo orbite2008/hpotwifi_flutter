@@ -1,32 +1,35 @@
-// lib/features/add_hotspot/presentation/pages/add_hotspot_page.dart
+// lib/features/home/presentation/pages/add_hotspot_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/auth_app_bar.dart';
+import '../../../../core/widgets/app_loader.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../controllers/home_controller.dart';
+import '../widgets/hotspot_success_dialog.dart';
 
-class AddHotspotPage extends StatefulWidget {
+class AddHotspotPage extends ConsumerStatefulWidget {
   const AddHotspotPage({super.key});
 
   @override
-  State<AddHotspotPage> createState() => _AddHotspotPageState();
+  ConsumerState<AddHotspotPage> createState() => _AddHotspotPageState();
 }
 
-class _AddHotspotPageState extends State<AddHotspotPage> {
+class _AddHotspotPageState extends ConsumerState<AddHotspotPage> {
   final _wifiNameController = TextEditingController();
   final _cityController = TextEditingController();
-  final _districtController = TextEditingController();
+  final _neighborhoodController = TextEditingController();
   final _zoneController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
   bool _filled = false;
 
   String? _wifiNameError;
   String? _cityError;
-  String? _districtError;
+  String? _neighborhoodError;
   String? _zoneError;
 
   @override
@@ -34,21 +37,20 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
     super.initState();
     _wifiNameController.addListener(_checkFilled);
     _cityController.addListener(_checkFilled);
-    _districtController.addListener(_checkFilled);
+    _neighborhoodController.addListener(_checkFilled);
     _zoneController.addListener(_checkFilled);
-    _descriptionController.addListener(_checkFilled);
   }
 
   void _checkFilled() {
     setState(() {
       _filled = _wifiNameController.text.trim().isNotEmpty &&
           _cityController.text.trim().isNotEmpty &&
-          _districtController.text.trim().isNotEmpty &&
+          _neighborhoodController.text.trim().isNotEmpty &&
           _zoneController.text.trim().isNotEmpty;
 
       _wifiNameError = null;
       _cityError = null;
-      _districtError = null;
+      _neighborhoodError = null;
       _zoneError = null;
     });
   }
@@ -57,17 +59,16 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
   void dispose() {
     _wifiNameController.dispose();
     _cityController.dispose();
-    _districtController.dispose();
+    _neighborhoodController.dispose();
     _zoneController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
-  void _onSubmit() {
+  Future<void> _onSubmit() async {
     FocusScope.of(context).unfocus();
-
     final loc = AppLocalizations.of(context)!;
 
+    // Validation
     bool hasError = false;
 
     if (_wifiNameController.text.trim().isEmpty) {
@@ -80,8 +81,8 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
       hasError = true;
     }
 
-    if (_districtController.text.trim().isEmpty) {
-      setState(() => _districtError = loc.fieldRequired);
+    if (_neighborhoodController.text.trim().isEmpty) {
+      setState(() => _neighborhoodError = loc.fieldRequired);
       hasError = true;
     }
 
@@ -92,17 +93,49 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
 
     if (hasError) return;
 
-   ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-    content: Text(
-      loc.hotspotWillBeCreated(_wifiNameController.text), 
-    ),
-    backgroundColor: Colors.green,
-    duration: const Duration(seconds: 2),
-  ),
-);
+    // ✅ Afficher le loader
+    await showAppLoader(context, message: loc.loading);
 
-    context.pop();
+    try {
+      // ✅ APPEL API RÉEL
+      final newHotspot = await ref.read(homeControllerProvider.notifier).createHotspot(
+        hotspotwifiname: _wifiNameController.text.trim(),
+        hotspotzonename: _zoneController.text.trim(),
+        city: _cityController.text.trim(),
+        neighborhood: _neighborhoodController.text.trim(),
+      );
+
+      // ✅ Fermer le loader
+      if (!mounted) return;
+      Navigator.of(context).pop();
+
+      // ✅ Afficher dialog de succès
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => HotspotSuccessDialog(
+          wifiName: newHotspot.hotspotwifiname,
+          zoneName: newHotspot.hotspotzonename,
+          city: newHotspot.city,
+          neighborhood: newHotspot.neighborhood,
+          routerName: newHotspot.routername,
+          routerPortName: newHotspot.routerportname,
+          serverName: newHotspot.servername,
+        ),
+      );
+
+      // Retour Home
+      if (mounted) context.pop();
+    } catch (e) {
+      // ✅ Fermer le loader en cas d'erreur
+      if (!mounted) return;
+      Navigator.of(context).pop();
+
+      // ✅ Afficher l'erreur
+      setState(() {
+        _wifiNameError = e.toString();
+      });
+    }
   }
 
   @override
@@ -114,27 +147,10 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: colors.background,
-        
-        appBar: AppBar(
-          backgroundColor: colors.surface,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: colors.textPrimary),
-            onPressed: () => context.pop(),
-          ),
-          title: Row(
-            children: [
-              const SizedBox(width: 12),
-              Text(
-                loc.addHotspotTitle,
-                style: TextStyle(
-                  color: colors.textPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
+        appBar: AuthAppBar(
+          title: loc.addHotspotTitle,
+          showReportButton: false,
+          showTicketButton: false,
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -159,7 +175,6 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
                   hintText: loc.wifiNameHint,
                   errorText: _wifiNameError,
                 ),
-
                 const SizedBox(height: 24),
 
                 // Ville et Quartier
@@ -192,7 +207,7 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            loc.districtLabel,
+                            'Quartier',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -201,16 +216,15 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
                           ),
                           const SizedBox(height: 8),
                           AppTextField(
-                            controller: _districtController,
-                            hintText: loc.districtHint,
-                            errorText: _districtError,
+                            controller: _neighborhoodController,
+                            hintText: 'Ex: Akpakpa',
+                            errorText: _neighborhoodError,
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
 
                 // Zone
@@ -228,32 +242,15 @@ class _AddHotspotPageState extends State<AddHotspotPage> {
                   hintText: loc.zoneHint,
                   errorText: _zoneError,
                 ),
-
-                const SizedBox(height: 24),
-
-                // Description
-                Text(
-                  loc.descriptionLabel,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: colors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                AppTextField(
-                  controller: _descriptionController,
-                  hintText: loc.descriptionHint,
-                  maxLines: 5,
-                ),
-
                 const SizedBox(height: 40),
 
-                // Bouton Ajouter
+                // Bouton
                 AppButton(
                   label: loc.addButton,
                   onPressed: _filled ? _onSubmit : null,
-                  backgroundColor: _filled ? colors.primary : colors.disabled,
+                  enabled: _filled,
+                  backgroundColor:
+                  _filled ? colors.buttonActive : colors.buttonInactive,
                 ),
               ],
             ),

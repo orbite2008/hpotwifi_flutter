@@ -1,11 +1,12 @@
 // lib/features/home/domain/entities/hotspot_entity.dart
 
+/// Rôle de l'utilisateur pour un hotspot
 enum HotspotRole {
-  owner,      // Propriétaire
-  assistant,  // Assistant
-  vendor;     // Vendeur
+  owner,
+  assistant,
+  vendor;
 
-  /// Parse une chaîne en HotspotRole
+  /// Parse une chaîne en HotspotRole avec support multilingue
   static HotspotRole fromString(String value) {
     final lower = value.toLowerCase().trim();
     switch (lower) {
@@ -24,22 +25,29 @@ enum HotspotRole {
   }
 }
 
+/// Entité représentant un hotspot WiFi dans le domain layer
 class HotspotEntity {
-  // Données de l'API
-  final int id;
-  final String hotspotwifiname;      // Nom WiFi
-  final String hotspotzonename;      // Nom de la zone
-  final String city;                 // Ville
-  final String neighborhood;         // Quartier
-  final String servername;           // Nom du serveur
-  final String routername;           // Nom du routeur
-  final String routerportname;       // Nom du port routeur
-  final HotspotRole role;            // Rôle utilisateur
-  final bool enable;                 // Actif/Inactif
-  final double latitude;             // GPS
-  final double longitude;            // GPS
+  // ═══════════════════════════════════════════════════════════════
+  // DONNÉES DE L'API (persistantes)
+  // ═══════════════════════════════════════════════════════════════
 
-  // Données temporaires (seront récupérées d'une autre API plus tard)
+  final int id;
+  final String hotspotwifiname;
+  final String hotspotzonename;
+  final String city;
+  final String neighborhood;
+  final String servername;
+  final String routername;
+  final String routerportname;
+  final HotspotRole role;
+  final bool enable;
+  final double latitude;
+  final double longitude;
+
+  // ═══════════════════════════════════════════════════════════════
+  // DONNÉES TEMPORAIRES (seront récupérées d'une API dédiée plus tard)
+  // ═══════════════════════════════════════════════════════════════
+
   final int dailySaleAmount;
   final int usersOnline;
 
@@ -60,10 +68,22 @@ class HotspotEntity {
     this.usersOnline = 0,
   });
 
-  // Getters pour compatibilité avec l'ancien code
+  // ═══════════════════════════════════════════════════════════════
+  // GETTERS DE COMPATIBILITÉ (pour l'ancien code)
+  // ═══════════════════════════════════════════════════════════════
+
+  /// Alias pour hotspotwifiname
   String get name => hotspotwifiname;
+
+  /// Alias pour hotspotzonename
   String get wifiZone => hotspotzonename;
+
+  /// Alias pour enable
   bool get isActive => enable;
+
+  // ═══════════════════════════════════════════════════════════════
+  // MÉTHODE COPYWITH (pour l'immutabilité)
+  // ═══════════════════════════════════════════════════════════════
 
   HotspotEntity copyWith({
     int? id,

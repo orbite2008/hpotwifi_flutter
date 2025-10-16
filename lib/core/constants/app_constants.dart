@@ -1,6 +1,5 @@
 // lib/core/constants/app_constants.dart
 
-/// Contient toutes les constantes globales de l'application Hotspot Wifi
 class AppConstants {
   // Nom et version
   static const String appName = "HpotWifi";
@@ -19,11 +18,9 @@ class AppConstants {
 }
 
 class ApiConfig {
-  /// Construit une Uri à partir du baseUrl + path
   static Uri uri(String path, [Map<String, String>? query]) {
     final base = Uri.parse(AppConstants.apiBaseUrl);
 
-    // Normalise le path pour éviter les doubles slash lors du join
     final normalizedPath = path.startsWith('/') ? path.substring(1) : path;
 
     return Uri(

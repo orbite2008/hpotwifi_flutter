@@ -31,7 +31,10 @@ class HotspotModel {
     required this.longitude,
   });
 
-  /// Parse depuis JSON API
+  // ═══════════════════════════════════════════════════════════════
+  // PARSING DEPUIS JSON API
+  // ═══════════════════════════════════════════════════════════════
+
   factory HotspotModel.fromJson(Map<String, dynamic> json) {
     return HotspotModel(
       id: json['id'] as int,
@@ -49,7 +52,11 @@ class HotspotModel {
     );
   }
 
-  /// Convertit vers JSON
+  // ═══════════════════════════════════════════════════════════════
+  // CONVERSION VERS JSON (pour envoyer à l'API)
+  // ═══════════════════════════════════════════════════════════════
+
+  /// Convertit l'instance en JSON pour l'API
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -67,7 +74,10 @@ class HotspotModel {
     };
   }
 
-  /// Convertit vers Entity (Domain)
+  // ═══════════════════════════════════════════════════════════════
+  // CONVERSION VERS ENTITY (Domain Layer)
+  // ═══════════════════════════════════════════════════════════════
+
   HotspotEntity toEntity() {
     return HotspotEntity(
       id: id,
@@ -82,12 +92,16 @@ class HotspotModel {
       enable: enable,
       latitude: latitude,
       longitude: longitude,
-      dailySaleAmount: 0,  // Valeur par défaut
-      usersOnline: 0,      // Valeur par défaut
+      dailySaleAmount: 0,
+      usersOnline: 0,
     );
   }
 
-  /// Convertit depuis Entity
+  // ═══════════════════════════════════════════════════════════════
+  // CONVERSION DEPUIS ENTITY (pour sauvegarder ou envoyer)
+  // ═══════════════════════════════════════════════════════════════
+
+  /// Convertit une Entity (domain) en Model (data)
   factory HotspotModel.fromEntity(HotspotEntity entity) {
     return HotspotModel(
       id: entity.id,

@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+
   "appTitle": "HpotWiFi",
   "welcome": "Welcome to Hotspot Wifi",
   "language": "Language",
@@ -53,7 +54,6 @@
 
   "forgotPasswordTitle": "Forgot your password?",
   "forgotPasswordSubtitle": "Enter your email address to receive a reset link.",
-  "continueButton": "Send link",
   "resetLinkSent": "Password reset link sent!",
   "checkYourEmail": "Please check your email inbox to continue.",
 
@@ -68,23 +68,9 @@
   "phoneInvalid": "Invalid phone number.",
 
   "greeting": "Hi, {name}!",
-  "@greeting": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
   "searchHotspots": "Search hotspots",
   "myHotspots": "My hotspots",
   "wifiZone": "Wifi Zone {number}",
-  "@wifiZone": {
-    "placeholders": {
-      "number": {
-        "type": "String"
-      }
-    }
-  },
   "noHotspotsTitle": "No hotspots",
   "noHotspotsMessage": "You don't have any hotspots yet. Start by creating one!",
   "addFirstHotspot": "Add my first hotspot",
@@ -96,6 +82,8 @@
   "owner": "Owner",
   "assistant": "Assistant",
   "fcfa": "f",
+  "noSearchResults": "No results found",
+  "noSearchResultsMessage": "No hotspot matches \"{query}\".\nTry a different search term.",
 
   "addHotspot": "Add a hotspot",
   "packageManagement": "Package management",
@@ -105,32 +93,39 @@
   "report": "Report",
   "myProfile": "My profile",
 
+  "hotspotCreatedTitle": "Hotspot created!",
+  "hotspotCreatedMessage": "The hotspot \"{name}\" has been successfully created.",
+  "copy": "Copy",
+  "ok": "OK",
+
   "addHotspotTitle": "Add a hotspot",
   "wifiNameLabel": "Wifi name",
   "wifiNameHint": "Enter the wifi name",
   "cityHint": "City",
-  "districtLabel": "District",
-  "districtHint": "District",
   "zoneLabel": "Zone",
   "zoneHint": "Zone",
-  "descriptionLabel": "Description",
-  "descriptionHint": "Description",
   "addButton": "Add",
   "fieldRequired": "This field is required",
-  "hotspotWillBeCreated": "Hotspot \"{name}\" will be created (feature to be implemented)",
-  "@hotspotWillBeCreated": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+
+  "filters": "Filters",
+  "apply": "Apply",
+  "cancel": "Cancel",
+  "graphComingSoon": "Graph coming soon",
+  "noUsersFound": "No users found",
+  "retry": "Retry",
+
   "editHotspotTitle": "Edit a hotspot",
   "serverNameLabel": "Server name:",
   "routerNameLabel": "Router name:",
   "bridgeNameLabel": "Bridge name:",
   "editButton": "Edit",
-  "hotspotUpdatedSuccess": "Hotspot updated successfully (feature to be implemented)",
+  "editableFieldsLabel": "Editable fields",
+  "hotspotActiveLabel": "Hotspot active",
+  "saveChangesButton": "Save changes",
+  "backButton": "Back",
+  "districtLabel": "District",
+  "error": "Error",
+
 
   "graph": "Graph",
   "userList": "User list",
@@ -143,6 +138,4 @@
   "connected": "Connected",
   "disconnected": "Disconnected",
   "package": "Package"
-
-
 }

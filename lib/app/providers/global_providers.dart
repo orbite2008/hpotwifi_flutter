@@ -11,6 +11,13 @@ import '../../features/auth/data/sources/auth_remote_source.dart';
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
 
+// ✅ AJOUT : Imports Hotspot
+import '../../features/home/data/sources/hotspot_remote_source.dart';
+import '../../features/home/data/sources/hotspot_local_source.dart';
+import '../../features/home/data/repositories/hotspot_repository.dart';
+import '../../features/home/domain/usecases/get_user_hotspots_usecase.dart';
+import '../../features/home/domain/usecases/edit_hotspot_usecase.dart';
+
 // ========== THEME MODE ==========
 class ThemeModeNotifier extends AsyncNotifier<ThemeMode> {
   @override
@@ -87,3 +94,32 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 
 final authControllerProvider =
 NotifierProvider<AuthController, AuthState>(AuthController.new);
+
+// ========== HOTSPOT DATA SOURCES ==========
+
+final hotspotRemoteSourceProvider = Provider<HotspotRemoteSource>(
+      (ref) => HotspotRemoteSource(ref.read(httpClientProvider)),
+);
+
+final hotspotLocalSourceProvider = Provider<HotspotLocalSource>(
+      (ref) => HotspotLocalSource(),
+);
+
+// ========== HOTSPOT REPOSITORY ==========
+
+final hotspotRepositoryProvider = Provider<HotspotRepository>((ref) {
+  return HotspotRepository(
+    ref.read(hotspotRemoteSourceProvider),
+    ref.read(hotspotLocalSourceProvider),
+  );
+});
+
+// ========== HOTSPOT USECASES ==========
+
+final getUserHotspotsUseCaseProvider = Provider<GetUserHotspotsUseCase>((ref) {
+  return GetUserHotspotsUseCase(ref.read(hotspotRepositoryProvider));
+});
+
+final editHotspotUseCaseProvider = Provider<EditHotspotUseCase>((ref) {
+  return EditHotspotUseCase(ref.read(hotspotRepositoryProvider));
+});

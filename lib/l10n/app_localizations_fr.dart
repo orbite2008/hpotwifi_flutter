@@ -150,9 +150,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get forgotPasswordSubtitle => 'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.';
 
   @override
-  String get continueButton => 'Envoyer le lien';
-
-  @override
   String get resetLinkSent => 'Lien de réinitialisation envoyé !';
 
   @override
@@ -183,7 +180,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get phoneInvalid => 'Numéro de téléphone invalide.';
 
   @override
-  String greeting(String name) {
+  String greeting(Object name) {
     return 'Salut, $name !';
   }
 
@@ -194,7 +191,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get myHotspots => 'Mes hotspots';
 
   @override
-  String wifiZone(String number) {
+  String wifiZone(Object number) {
     return 'Wifi Zone $number';
   }
 
@@ -232,6 +229,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fcfa => 'f';
 
   @override
+  String get noSearchResults => 'Aucun résultat trouvé';
+
+  @override
+  String noSearchResultsMessage(Object query) {
+    return 'Aucun hotspot ne correspond à \"$query\".\nEssayez un autre terme de recherche.';
+  }
+
+  @override
   String get addHotspot => 'Ajouter un hotspot';
 
   @override
@@ -253,6 +258,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get myProfile => 'Mon profil';
 
   @override
+  String get hotspotCreatedTitle => 'Hotspot créé !';
+
+  @override
+  String hotspotCreatedMessage(Object name) {
+    return 'Le hotspot \"$name\" a été créé avec succès.';
+  }
+
+  @override
+  String get copy => 'Copier';
+
+  @override
+  String get ok => 'OK';
+
+  @override
   String get addHotspotTitle => 'Ajouter un hotspot';
 
   @override
@@ -265,22 +284,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cityHint => 'Ville';
 
   @override
-  String get districtLabel => 'Quartier';
-
-  @override
-  String get districtHint => 'Quartier';
-
-  @override
   String get zoneLabel => 'Zone';
 
   @override
   String get zoneHint => 'Zone';
-
-  @override
-  String get descriptionLabel => 'Description';
-
-  @override
-  String get descriptionHint => 'Description';
 
   @override
   String get addButton => 'Ajouter';
@@ -289,12 +296,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fieldRequired => 'Ce champ est requis';
 
   @override
-  String hotspotWillBeCreated(String name) {
-    return 'Hotspot \"$name\" sera créé (fonctionnalité à implémenter)';
-  }
+  String get filters => 'Filtres';
 
   @override
-  String get editHotspotTitle => 'Modifier un hospot';
+  String get apply => 'Appliquer';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get graphComingSoon => 'Graphique à venir';
+
+  @override
+  String get noUsersFound => 'Aucun utilisateur trouvé';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get editHotspotTitle => 'Modifier un hotspot';
 
   @override
   String get serverNameLabel => 'Nom du serveur:';
@@ -309,7 +329,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editButton => 'Modifier';
 
   @override
-  String get hotspotUpdatedSuccess => 'Hotspot modifié avec succès (fonctionnalité à implémenter)';
+  String get editableFieldsLabel => 'Champs modifiables';
+
+  @override
+  String get hotspotActiveLabel => 'Hotspot actif';
+
+  @override
+  String get saveChangesButton => 'Enregistrer les modifications';
+
+  @override
+  String get backButton => 'Retour';
+
+  @override
+  String get districtLabel => 'Quartier';
+
+  @override
+  String get error => 'Erreur';
 
   @override
   String get graph => 'Graphe';
